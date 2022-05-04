@@ -1,11 +1,10 @@
 package borges.dimitrius;
 
+import borges.dimitrius.dao.PatientDao;
 import borges.dimitrius.factory.DbConnectionFactory;
+import borges.dimitrius.model.Patient;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class FrameworklessApi {
 
@@ -14,20 +13,11 @@ public class FrameworklessApi {
         try {
             Connection connection = DbConnectionFactory.getConnection();
 
-            Statement statement = connection.createStatement();
+            PatientDao pacientDao = new PatientDao(connection);
 
-            boolean res = statement.execute("SELECT * FROM pacient");
+            //pacientDao.updateById(new Patient(Date.valueOf("2000-02-01"), "Fulano"), 5L);
 
-            if(res){
-                ResultSet resultSet = statement.getResultSet();
-
-                while (resultSet.next()){
-                    System.out.println("Client ID: " + resultSet.getInt(1));
-                    System.out.println("Client name: " + resultSet.getString(3));
-
-                }
-
-            }
+            pacientDao.findAll().forEach(System.out::println);
 
 
         } catch (SQLException e) {
