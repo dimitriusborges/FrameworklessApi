@@ -1,5 +1,11 @@
 package borges.dimitrius.model;
 
 //for now, just a marking interface
-public interface Entity {
+public class Entity {
+
+    protected Long id;
+
+    public Long getId() {
+        return id;
+    }
 }

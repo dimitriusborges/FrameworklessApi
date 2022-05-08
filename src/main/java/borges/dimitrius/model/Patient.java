@@ -2,16 +2,10 @@ package borges.dimitrius.model;
 
 import java.util.Date;
 
-public class Patient implements Entity{
+public class Patient extends Entity{
 
-    private Long id;
     private Date birthDate;
     private String name;
-
-
-    public Long getId() {
-        return id;
-    }
 
     public Patient(Date birthDate, String name) {
         this.birthDate = birthDate;

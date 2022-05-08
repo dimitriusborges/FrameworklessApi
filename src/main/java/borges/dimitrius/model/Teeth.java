@@ -1,13 +1,9 @@
 package borges.dimitrius.model;
 
-public class Teeth {
+public class Teeth extends Entity{
 
-    private Long id;
+
     private Integer toothNum;
-
-    public Long getId() {
-        return id;
-    }
 
     public Integer getToothNum() {
         return toothNum;

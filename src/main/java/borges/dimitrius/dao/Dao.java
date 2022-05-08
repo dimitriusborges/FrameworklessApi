@@ -75,10 +75,28 @@ public abstract class Dao {
 
     }
 
+    public <E extends Entity> void insert(E entity) throws SQLException{
+        this.insert(this.buildValMapping(entity));
+    }
+
     protected void update(Map<String, Object> valMap, String cond) throws SQLException{
 
         String query = this.prepareUpdateQuery(valMap.keySet(), valMap.size(), cond);
         fillQueryStmt(query, valMap).executeUpdate();
+    }
+
+    public <E extends Entity> void updateById(E entity) throws SQLException{
+        this.update(this.buildValMapping( entity), "WHERE id = '" + entity.getId() + "'");
+    }
+
+    protected void delete(String cond) throws SQLException {
+        Statement stmt = dbConn.createStatement();
+
+        stmt.execute("DELETE FROM " + this.tableName + cond);
+    }
+
+    public void deleteById(Long id) throws SQLException {
+        this.delete(" WHERE id = " + id);
     }
 
     protected ResultSet fetchAll() throws SQLException {
@@ -88,10 +106,6 @@ public abstract class Dao {
 
         return stmt.getResultSet();
     }
-
-    public abstract <E extends Entity> void insert(E entity) throws SQLException;
-
-    public abstract <E extends Entity> void updateById(E entity, Long id) throws SQLException;
 
     public abstract List<? extends Entity> findAll() throws SQLException;
 

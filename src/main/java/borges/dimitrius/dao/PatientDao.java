@@ -36,6 +36,17 @@ public class PatientDao extends Dao{
     }
 
     @Override
+    public <E extends Entity> Map<String, Object> buildValMapping(E entity) {
+        Patient pacient = (Patient) entity;
+        Map<String, Object> valMapping = new HashMap<>();
+
+        valMapping.put(PatientCols.BIRTHDATE.toString(), pacient.getBirthDate());
+        valMapping.put(PatientCols.NAME.toString(), pacient.getName());
+
+        return valMapping;
+    }
+
+    @Override
     public List<Patient> findAll() throws SQLException{
 
         ResultSet resultSet = super.fetchAll();
@@ -54,26 +65,5 @@ public class PatientDao extends Dao{
         return pacientList;
     }
 
-    @Override
-    public <E extends Entity> void insert(E entity) throws SQLException {
-        super.insert(this.buildValMapping(entity));
-    }
 
-    @Override
-    public <E extends Entity> void updateById(E entity, Long id) throws SQLException {
-        //TODO: the condition building doesn't feel right
-        super.update(this.buildValMapping(entity),
-                "WHERE id = '" + id + "'");
-    }
-
-    @Override
-    public <E extends Entity> Map<String, Object> buildValMapping(E entity) {
-        Patient pacient = (Patient) entity;
-        Map<String, Object> valMapping = new HashMap<>();
-
-        valMapping.put(PatientCols.BIRTHDATE.toString(), pacient.getBirthDate());
-        valMapping.put(PatientCols.NAME.toString(), pacient.getName());
-
-        return valMapping;
-    }
 }

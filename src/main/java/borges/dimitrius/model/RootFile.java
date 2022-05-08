@@ -1,15 +1,9 @@
 package borges.dimitrius.model;
 
-public class RootFile {
+public class RootFile extends Entity{
 
-    private Long id;
     private String nameType;
     private String brand;
-
-
-    public Long getId() {
-        return id;
-    }
 
     public String getNameType() {
         return nameType;
