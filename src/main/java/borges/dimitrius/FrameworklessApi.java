@@ -19,12 +19,12 @@ public class FrameworklessApi {
 
             pacientDao.insert(new Patient(Date.valueOf("2022-01-01"), "Ciclano"));
 
-            pacientDao.findAll().forEach(System.out::println);
+           // pacientDao.findAll().forEach(System.out::println);
 
-            System.out.println("\n");
-            pacientDao.deleteById(6L);
+            //System.out.println("\n");
+           // pacientDao.deleteById(6L);
 
-            pacientDao.findAll().forEach(System.out::println);
+           // pacientDao.findAll().forEach(System.out::println);
 
 
         } catch (SQLException e) {

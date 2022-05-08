@@ -60,7 +60,7 @@ public abstract class Dao {
                 case "java.lang.Integer"-> stmt.setInt(++idx, (Integer) val);
                 case "java.lang.Long" -> stmt.setLong(++idx, (Long) val);
                 case "java.sql.Date" -> stmt.setDate(++idx, (Date) val);
-                default -> System.out.println("Type: " + valType + " Not treated yet");
+                default -> System.out.println("Type: " + valType + " Not implemented yet");
             }
         }
 
@@ -75,7 +75,7 @@ public abstract class Dao {
 
     }
 
-    public <E extends Entity> void insert(E entity) throws SQLException{
+    public void insert(Entity entity) throws SQLException{
         this.insert(this.buildValMapping(entity));
     }
 
@@ -85,7 +85,7 @@ public abstract class Dao {
         fillQueryStmt(query, valMap).executeUpdate();
     }
 
-    public <E extends Entity> void updateById(E entity) throws SQLException{
+    public void updateById(Entity entity) throws SQLException{
         this.update(this.buildValMapping( entity), "WHERE id = '" + entity.getId() + "'");
     }
 
@@ -109,5 +109,5 @@ public abstract class Dao {
 
     public abstract List<? extends Entity> findAll() throws SQLException;
 
-    public abstract <E extends Entity> Map<String, Object> buildValMapping(E entity);
+    public abstract Map<String, Object> buildValMapping(Entity entity);
 }

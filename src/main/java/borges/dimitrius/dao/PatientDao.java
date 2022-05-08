@@ -36,7 +36,7 @@ public class PatientDao extends Dao{
     }
 
     @Override
-    public <E extends Entity> Map<String, Object> buildValMapping(E entity) {
+    public Map<String, Object> buildValMapping(Entity entity) {
         Patient pacient = (Patient) entity;
         Map<String, Object> valMapping = new HashMap<>();
 
