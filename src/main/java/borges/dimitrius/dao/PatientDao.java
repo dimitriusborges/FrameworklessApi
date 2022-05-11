@@ -19,37 +19,24 @@ public class PatientDao extends Dao{
         BIRTHDATE("birthdate"),
         NAME("name");
 
-        private final String name;
+        private final String colName;
 
-        PatientCols(String name) {
-            this.name = name;
+        PatientCols(String colName) {
+            this.colName = colName;
         }
 
         @Override
         public String toString(){
-            return this.name;
+            return this.colName;
         }
     }
 
     public PatientDao(Connection connection) {
-        super(connection, "pacient");
+        super(connection, "patient");
     }
 
     @Override
-    public Map<String, Object> buildValMapping(Entity entity) {
-        Patient pacient = (Patient) entity;
-        Map<String, Object> valMapping = new HashMap<>();
-
-        valMapping.put(PatientCols.BIRTHDATE.toString(), pacient.getBirthDate());
-        valMapping.put(PatientCols.NAME.toString(), pacient.getName());
-
-        return valMapping;
-    }
-
-    @Override
-    public List<Patient> findAll() throws SQLException{
-
-        ResultSet resultSet = super.fetchAll();
+    protected List<Patient> loadFromResultSet(ResultSet resultSet) throws SQLException {
 
         List<Patient> pacientList = new ArrayList<>();
 
@@ -64,6 +51,31 @@ public class PatientDao extends Dao{
 
         return pacientList;
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Patient findById(Long id) throws SQLException {
+        return (Patient) this.fetchById(id);
+    }
+
+    @Override
+    public List<Patient> findAll() throws SQLException{
+
+        return loadFromResultSet(this.fetchAll());
+    }
+
+    @Override
+    public Map<String, Object> buildValMapping(Entity entity) {
+        Patient pacient = (Patient) entity;
+        Map<String, Object> valMapping = new HashMap<>();
+
+        valMapping.put(PatientCols.BIRTHDATE.colName, pacient.getBirthDate());
+        valMapping.put(PatientCols.NAME.colName, pacient.getName());
+
+        return valMapping;
+    }
+
+
 
 
 }

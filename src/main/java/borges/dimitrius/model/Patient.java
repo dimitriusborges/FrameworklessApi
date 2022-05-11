@@ -1,6 +1,7 @@
 package borges.dimitrius.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Patient extends Entity{
 
@@ -41,5 +42,18 @@ public class Patient extends Entity{
                 ", birthDate=" + birthDate +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Patient patient = (Patient) o;
+        return getBirthDate().equals(patient.getBirthDate()) && getName().equals(patient.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getBirthDate(), getName());
     }
 }

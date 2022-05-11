@@ -25,7 +25,7 @@ public abstract class Dao {
         fmt.format("INSERT INTO %s (%s) VALUES(%s", this.tableName, String.join(",", cols), "?,".repeat(nValues));
 
         sbQuery.replace(sbQuery.length() -1, sbQuery.length(), ")");
-        //System.out.println(sbQuery);
+
         return sbQuery.toString();
     }
 
@@ -35,11 +35,17 @@ public abstract class Dao {
 
         fmt.format("UPDATE %s SET ", this.tableName);
 
-        for(String col: cols){
-            sbQuery.append(String.format("%s = ?,", col));
-        }
+        Iterator<String> iterator = cols.iterator();
 
-        sbQuery.delete(sbQuery.length() -1 , sbQuery.length());
+        while(iterator.hasNext()){
+            String element = iterator.next();
+            if(iterator.hasNext()) {
+                sbQuery.append(String.format("%s = ?,", element));
+            }
+            else{
+                sbQuery.append(String.format("%s = ?", element));
+            }
+        }
 
         sbQuery.append(cond);
 
@@ -60,7 +66,7 @@ public abstract class Dao {
                 case "java.lang.Integer"-> stmt.setInt(++idx, (Integer) val);
                 case "java.lang.Long" -> stmt.setLong(++idx, (Long) val);
                 case "java.sql.Date" -> stmt.setDate(++idx, (Date) val);
-                default -> System.out.println("Type: " + valType + " Not implemented yet");
+                default -> throw new SQLException("Type: " + valType + " Not implemented yet");
             }
         }
 
@@ -86,7 +92,7 @@ public abstract class Dao {
     }
 
     public void updateById(Entity entity) throws SQLException{
-        this.update(this.buildValMapping( entity), "WHERE id = '" + entity.getId() + "'");
+        this.update(this.buildValMapping( entity), " WHERE id = '" + entity.getId() + "'");
     }
 
     protected void delete(String cond) throws SQLException {
@@ -99,15 +105,41 @@ public abstract class Dao {
         this.delete(" WHERE id = " + id);
     }
 
+    protected Entity fetchById(Long id) throws SQLException{
+        Statement stmt = dbConn.createStatement();
+
+        stmt.execute("SELECT * FROM " + this.tableName + " WHERE id = " + id);
+
+        @SuppressWarnings("unchecked")
+        List<Entity> entities = (List<Entity>) loadFromResultSet(stmt.getResultSet());
+
+        if(entities.size() > 1){
+            throw new SQLException("Unexpected number of registers on result while reading by id from"
+                    + this.tableName
+                    +  " table");
+        }
+
+        else if(entities.isEmpty()){
+            return null;
+        }
+
+        return entities.get(0);
+
+    }
+
     protected ResultSet fetchAll() throws SQLException {
         Statement stmt = dbConn.createStatement();
 
-        boolean hasRes = stmt.execute("SELECT * FROM " + this.tableName);
+        stmt.execute("SELECT * FROM " + this.tableName);
 
         return stmt.getResultSet();
     }
 
+    protected abstract List<? extends Entity> loadFromResultSet(ResultSet resultSet) throws SQLException;
+
     public abstract List<? extends Entity> findAll() throws SQLException;
+
+    public abstract <E extends Entity> E findById(Long id) throws SQLException;
 
     public abstract Map<String, Object> buildValMapping(Entity entity);
 }
