@@ -1,7 +1,7 @@
 package borges.dimitrius.dao;
 
 
-import borges.dimitrius.model.Entity;
+import borges.dimitrius.model.entities.Entity;
 
 import java.sql.*;
 import java.sql.Date;
@@ -29,7 +29,7 @@ public abstract class Dao {
         return sbQuery.toString();
     }
 
-    private String prepareUpdateQuery(Set<String> cols, int nValues, String cond){
+    private String prepareUpdateQuery(Set<String> cols, int nValues, String conditions){
         StringBuilder sbQuery = new StringBuilder();
         Formatter fmt = new Formatter(sbQuery);
 
@@ -47,7 +47,7 @@ public abstract class Dao {
             }
         }
 
-        sbQuery.append(cond);
+        sbQuery.append(conditions);
 
         return sbQuery.toString();
     }
@@ -85,9 +85,9 @@ public abstract class Dao {
         this.insert(this.buildValMapping(entity));
     }
 
-    protected void update(Map<String, Object> valMap, String cond) throws SQLException{
+    protected void update(Map<String, Object> valMap, String conditions) throws SQLException{
 
-        String query = this.prepareUpdateQuery(valMap.keySet(), valMap.size(), cond);
+        String query = this.prepareUpdateQuery(valMap.keySet(), valMap.size(), conditions);
         fillQueryStmt(query, valMap).executeUpdate();
     }
 
@@ -95,10 +95,10 @@ public abstract class Dao {
         this.update(this.buildValMapping( entity), " WHERE id = '" + entity.getId() + "'");
     }
 
-    protected void delete(String cond) throws SQLException {
+    protected void delete(String conditions) throws SQLException {
         Statement stmt = dbConn.createStatement();
 
-        stmt.execute("DELETE FROM " + this.tableName + cond);
+        stmt.execute("DELETE FROM " + this.tableName + conditions);
     }
 
     public void deleteById(Long id) throws SQLException {

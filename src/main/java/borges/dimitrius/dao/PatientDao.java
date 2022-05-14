@@ -1,7 +1,7 @@
 package borges.dimitrius.dao;
 
-import borges.dimitrius.model.Entity;
-import borges.dimitrius.model.Patient;
+import borges.dimitrius.model.entities.Entity;
+import borges.dimitrius.model.entities.Patient;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

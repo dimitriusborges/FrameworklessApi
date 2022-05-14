@@ -1,7 +1,7 @@
 package borges.dimitrius.dao;
 
 import borges.dimitrius.factory.DbConnectionFactoryTest;
-import borges.dimitrius.model.Patient;
+import borges.dimitrius.model.entities.Patient;
 import org.junit.jupiter.api.*;
 
 
@@ -17,12 +17,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PatientDaoTest {
 
     private final Patient defaultPatient = new Patient(Date.valueOf("1970-01-1"), "Default");
+    private PatientDao patientDao;
 
     @BeforeEach
     public void prepareDatabase(){
 
         try {
             Connection connection = DbConnectionFactoryTest.getConnection();
+            this.patientDao = new PatientDao(connection);
 
             Statement stmt = connection.createStatement();
 
@@ -41,7 +43,6 @@ public class PatientDaoTest {
         Patient newPatient = new Patient(Date.valueOf("2022-01-01"), "NewPatient");
 
         try {
-            PatientDao patientDao = new PatientDao(DbConnectionFactoryTest.getConnection());
             patientDao.insert(newPatient);
 
             List<Patient> patients = patientDao.findAll();
@@ -64,8 +65,6 @@ public class PatientDaoTest {
     public void findExistingPatient(){
 
         try {
-            PatientDao patientDao = new PatientDao(DbConnectionFactoryTest.getConnection());
-
             Patient patientFromDb = patientDao.findById(1L);
 
             assertEquals(defaultPatient, patientFromDb);
@@ -79,8 +78,6 @@ public class PatientDaoTest {
     public void updateExistingPatient(){
 
         try {
-            PatientDao patientDao = new PatientDao(DbConnectionFactoryTest.getConnection());
-
             Patient patientFromDb = patientDao.findById(1L);
 
             Patient patientToUpdate = new Patient(patientFromDb.getId(),
@@ -103,8 +100,6 @@ public class PatientDaoTest {
     public void deleteExistingPatient(){
 
         try {
-            PatientDao patientDao = new PatientDao(DbConnectionFactoryTest.getConnection());
-
             patientDao.deleteById(1L);
 
             assertNull(patientDao.findById(1L));

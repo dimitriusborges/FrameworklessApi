@@ -1,11 +1,19 @@
-package borges.dimitrius.model;
+package borges.dimitrius.model.entities;
 
 import java.util.Objects;
 
 public class SymptomType extends Entity {
 
-
     private String description;
+
+    public SymptomType(String description){
+        this.description = description;
+    }
+
+    public SymptomType(Long id, String description) {
+        this.id = id;
+        this.description = description;
+    }
 
     public String getDescription() {
         return description;
@@ -14,7 +22,6 @@ public class SymptomType extends Entity {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     @Override
     public String toString() {

@@ -1,7 +1,7 @@
 package borges.dimitrius.dao;
 
 import borges.dimitrius.factory.DbConnectionFactoryTest;
-import borges.dimitrius.model.RootFile;
+import borges.dimitrius.model.entities.RootFile;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
@@ -16,10 +16,14 @@ public class RootFileDaoTest {
 
     private final RootFile defaultRootFile = new RootFile("NameType", "Brand");
 
+    private RootFileDao rootFileDao;
+
     @BeforeEach
     public void prepareDatabase(){
         try {
             Connection connection = DbConnectionFactoryTest.getConnection();
+
+            this.rootFileDao = new RootFileDao(connection);
 
             Statement stmt = connection.createStatement();
 
@@ -38,7 +42,6 @@ public class RootFileDaoTest {
         RootFile newRootFile = new RootFile("aNameType", "aBrand");
 
         try {
-            RootFileDao rootFileDao = new RootFileDao(DbConnectionFactoryTest.getConnection());
             rootFileDao.insert(newRootFile);
 
             List<RootFile> rootFiles = rootFileDao.findAll();
@@ -61,8 +64,6 @@ public class RootFileDaoTest {
     public void findExistingRootFile(){
 
         try {
-            RootFileDao rootFileDao = new RootFileDao(DbConnectionFactoryTest.getConnection());
-
             RootFile rootFileFromDb = rootFileDao.findById(1L);
 
             assertEquals(defaultRootFile, rootFileFromDb);
@@ -77,8 +78,6 @@ public class RootFileDaoTest {
     public void updateExistingRootFile(){
 
         try {
-            RootFileDao rootFileDao = new RootFileDao(DbConnectionFactoryTest.getConnection());
-
             RootFile rootFileFromDb = rootFileDao.findById(1L);
 
             RootFile rootFileToUpdate = new RootFile(rootFileFromDb.getId(),
@@ -103,8 +102,6 @@ public class RootFileDaoTest {
     public void deleteExistingRootFile(){
 
         try {
-            RootFileDao rootFileDao = new RootFileDao(DbConnectionFactoryTest.getConnection());
-
             rootFileDao.deleteById(1L);
 
             assertNull(rootFileDao.findById(1L));

@@ -1,7 +1,7 @@
 package borges.dimitrius.dao;
 
-import borges.dimitrius.model.Entity;
-import borges.dimitrius.model.RootFile;
+import borges.dimitrius.model.entities.Entity;
+import borges.dimitrius.model.entities.RootFile;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -29,7 +29,6 @@ public class RootFileDao extends Dao{
             return this.colName;
         }
     }
-
 
     public RootFileDao (Connection connection){
         super(connection, "rootfile");

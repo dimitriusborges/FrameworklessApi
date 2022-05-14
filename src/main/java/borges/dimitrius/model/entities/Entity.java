@@ -1,4 +1,4 @@
-package borges.dimitrius.model;
+package borges.dimitrius.model.entities;
 
 //for now, just a marking interface
 public class Entity {

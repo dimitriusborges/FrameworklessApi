@@ -1,4 +1,4 @@
-package borges.dimitrius.model;
+package borges.dimitrius.model.entities;
 
 import java.util.Objects;
 
