@@ -27,9 +27,14 @@ public class RootFileDaoTest {
 
             Statement stmt = connection.createStatement();
 
-            stmt.execute("TRUNCATE rootfile");
+            stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
 
+            stmt.execute("TRUNCATE treatment");
+
+            stmt.execute("TRUNCATE rootfile");
             stmt.execute("INSERT INTO rootfile (name_type, brand) values('NameType', 'Brand')");
+
+            stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
 
         } catch (SQLException e) {
 

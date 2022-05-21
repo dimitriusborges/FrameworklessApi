@@ -20,7 +20,7 @@ public class PatientDaoTest {
     private PatientDao patientDao;
 
     @BeforeEach
-    public void prepareDatabase(){
+    public void preparedatabase(){
 
         try {
             Connection connection = DbConnectionFactoryTest.getConnection();
@@ -28,9 +28,16 @@ public class PatientDaoTest {
 
             Statement stmt = connection.createStatement();
 
-            stmt.execute("TRUNCATE patient");
+            stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
 
+            stmt.execute("TRUNCATE treatment");
+            stmt.execute("TRUNCATE patient_symptom");
+
+            stmt.execute("TRUNCATE patient");
             stmt.execute("INSERT INTO patient (birthdate, name) values('1970-01-01', 'Default')");
+
+
+            stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
 
         } catch (SQLException e) {
 

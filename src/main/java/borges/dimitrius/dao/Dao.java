@@ -9,7 +9,7 @@ import java.util.*;
 
 public abstract class Dao {
 
-    private final Connection dbConn;
+    protected final Connection dbConn;
     private final String tableName;
 
     public Dao(Connection connection, String tableName){

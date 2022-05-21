@@ -28,9 +28,13 @@ class StapleDaoTest {
 
             Statement stmt = connection.createStatement();
 
-            stmt.execute("TRUNCATE staple");
+            stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
 
+            stmt.execute("TRUNCATE treatment");
+            stmt.execute("TRUNCATE staple");
             stmt.execute("INSERT INTO staple (type) values('Type1A')");
+
+            stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
 
         } catch (SQLException e) {
 

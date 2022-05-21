@@ -26,9 +26,13 @@ public class SymptomTypeDaoTest {
 
             Statement stmt = connection.createStatement();
 
-            stmt.execute("TRUNCATE symptom_type");
+            stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
 
+            stmt.execute("TRUNCATE patient_symptom");
+            stmt.execute("TRUNCATE symptom_type");
             stmt.execute("INSERT INTO symptom_type (description) values('DefaultDescription')");
+
+            stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
 
         } catch (SQLException e) {
 
