@@ -3,7 +3,7 @@ package borges.dimitrius.dao;
 import borges.dimitrius.factory.DbConnectionFactoryTest;
 import borges.dimitrius.model.entities.Patient;
 import borges.dimitrius.model.entities.PatientSymptom;
-import borges.dimitrius.model.dto.PatientSymptomDto;
+import borges.dimitrius.model.vo.PatientSymptomVo;
 import borges.dimitrius.model.entities.SymptomType;
 import org.junit.jupiter.api.*;
 
@@ -76,7 +76,7 @@ class PatientSymptomDaoTest {
 
             assertEquals(newPatientSymptom, patientSymptomFromDb);
 
-            PatientSymptomDto patientSymptomDto = patientSymptomDao.transformIntoDto(patientSymptomFromDb);
+            PatientSymptomVo patientSymptomDto = patientSymptomDao.transformIntoDto(patientSymptomFromDb);
 
             assertEquals(patientSymptomDto.getPatientSymptom(), patientSymptomFromDb);
             assertEquals(patientSymptomDto.getPatient(), patientDao.findById(1L));
@@ -94,7 +94,7 @@ class PatientSymptomDaoTest {
 
             assertEquals(patientSymptomFromDb, defaultPatientSymptom);
 
-            PatientSymptomDto patientSymptomDto = patientSymptomDao.transformIntoDto(patientSymptomFromDb);
+            PatientSymptomVo patientSymptomDto = patientSymptomDao.transformIntoDto(patientSymptomFromDb);
             assertEquals(patientSymptomDto.getPatientSymptom(), patientSymptomFromDb);
             assertEquals(patientSymptomDto.getPatient(), patientDao.findById(1L));
             assertEquals(patientSymptomDto.getSymptomType(), symptomTypeDao.findById(1L));
@@ -120,7 +120,7 @@ class PatientSymptomDaoTest {
             assertEquals(patientSymptomToUpdate, updatedPatientSymptomFromDb);
             assertNotEquals(patientSymptomFromDb, updatedPatientSymptomFromDb);
 
-            PatientSymptomDto patientSymptomDto = patientSymptomDao.transformIntoDto(updatedPatientSymptomFromDb);
+            PatientSymptomVo patientSymptomDto = patientSymptomDao.transformIntoDto(updatedPatientSymptomFromDb);
 
             assertEquals(patientSymptomDto.getPatientSymptom(), updatedPatientSymptomFromDb);
             assertEquals(patientSymptomDto.getPatient(), patientDao.findById(2L));

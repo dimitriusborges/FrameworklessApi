@@ -92,7 +92,7 @@ public abstract class Dao {
     }
 
     public void updateById(Entity entity) throws SQLException{
-        this.update(this.buildValMapping( entity), " WHERE id = '" + entity.getId() + "'");
+        this.update(this.buildValMapping(entity), " WHERE id = '" + entity.getId() + "'");
     }
 
     protected void delete(String conditions) throws SQLException {

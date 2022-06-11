@@ -1,6 +1,6 @@
 package borges.dimitrius.dao;
 
-import borges.dimitrius.model.dto.TreatmentDto;
+import borges.dimitrius.model.vo.TreatmentVo;
 import borges.dimitrius.model.entities.*;
 
 import java.sql.Connection;
@@ -43,7 +43,7 @@ public class TreatmentDao extends Dao {
         super(connection, "treatment");
     }
 
-    public TreatmentDto transformIntoDto(Treatment treatment) throws SQLException{
+    public TreatmentVo transformIntoDto(Treatment treatment) throws SQLException{
 
         PatientDao patientDao = new PatientDao(this.dbConn);
         Patient patient = patientDao.findById(treatment.getPatientId());
@@ -54,7 +54,7 @@ public class TreatmentDao extends Dao {
         StapleDao stapleDao = new StapleDao(this.dbConn);
         Staple staple = stapleDao.findById(treatment.getStapleId());
 
-        return new TreatmentDto(treatment, patient, rootFile, staple);
+        return new TreatmentVo(treatment, patient, rootFile, staple);
 
     }
 

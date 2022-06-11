@@ -1,6 +1,6 @@
 package borges.dimitrius.dao;
 
-import borges.dimitrius.model.dto.PatientSymptomDto;
+import borges.dimitrius.model.vo.PatientSymptomVo;
 import borges.dimitrius.model.entities.*;
 
 import java.sql.Connection;
@@ -35,14 +35,14 @@ public class PatientSymptomDao extends Dao{
         super(connection, "patient_symptom");
     }
 
-    public PatientSymptomDto transformIntoDto(PatientSymptom patientSymptom) throws SQLException {
+    public PatientSymptomVo transformIntoDto(PatientSymptom patientSymptom) throws SQLException {
         PatientDao patientDao = new PatientDao(this.dbConn);
         Patient patient = patientDao.findById(patientSymptom.getPatientId());
 
         SymptomTypeDao symptomTypeDao = new SymptomTypeDao(this.dbConn);
         SymptomType symptomType = symptomTypeDao.findById(patientSymptom.getSymptomId());
 
-        return new PatientSymptomDto(patientSymptom, symptomType, patient);
+        return new PatientSymptomVo(patientSymptom, symptomType, patient);
 
     }
 

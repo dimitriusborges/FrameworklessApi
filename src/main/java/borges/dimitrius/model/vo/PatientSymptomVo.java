@@ -1,17 +1,17 @@
-package borges.dimitrius.model.dto;
+package borges.dimitrius.model.vo;
 
 
 import borges.dimitrius.model.entities.Patient;
 import borges.dimitrius.model.entities.PatientSymptom;
 import borges.dimitrius.model.entities.SymptomType;
 
-public class PatientSymptomDto {
+public class PatientSymptomVo {
 
     private final PatientSymptom patientSymptomDecorated;
     private SymptomType symptomType;
     private Patient patient;
 
-    public PatientSymptomDto(PatientSymptom patientSymptom, SymptomType symptomType, Patient patient){
+    public PatientSymptomVo(PatientSymptom patientSymptom, SymptomType symptomType, Patient patient){
         this.patientSymptomDecorated = patientSymptom;
         this.symptomType = symptomType;
         this.patient = patient;

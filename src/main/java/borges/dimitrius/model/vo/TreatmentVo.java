@@ -1,11 +1,11 @@
-package borges.dimitrius.model.dto;
+package borges.dimitrius.model.vo;
 
 import borges.dimitrius.model.entities.Patient;
 import borges.dimitrius.model.entities.Treatment;
 import borges.dimitrius.model.entities.RootFile;
 import borges.dimitrius.model.entities.Staple;
 
-public class TreatmentDto {
+public class TreatmentVo {
 
     private final Treatment treatment;
     private Patient patient;
@@ -13,7 +13,7 @@ public class TreatmentDto {
     private Staple staple;
 
 
-    public TreatmentDto(Treatment procedure, Patient patient, RootFile rootFile, Staple staple) {
+    public TreatmentVo(Treatment procedure, Patient patient, RootFile rootFile, Staple staple) {
         this.treatment = procedure;
         this.patient = patient;
         this.rootFile = rootFile;
