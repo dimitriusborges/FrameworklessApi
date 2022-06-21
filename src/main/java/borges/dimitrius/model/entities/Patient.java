@@ -1,9 +1,12 @@
 package borges.dimitrius.model.entities;
 
+import borges.dimitrius.model.dto.PatientDto;
+import borges.dimitrius.model.dto.Sharable;
+
 import java.util.Date;
 import java.util.Objects;
 
-public class Patient extends Entity{
+public class Patient extends Entity implements Sharable {
 
     private Date birthDate;
     private String name;
@@ -55,5 +58,10 @@ public class Patient extends Entity{
     @Override
     public int hashCode() {
         return Objects.hash(getBirthDate(), getName());
+    }
+
+    @Override
+    public PatientDto toDto(){
+        return new PatientDto(this.id.toString(), this.birthDate.toString(), this.name);
     }
 }

@@ -1,62 +1,79 @@
 package borges.dimitrius.controller;
 
-import borges.dimitrius.model.vo.HttpRequestVo;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import java.io.OutputStream;
 
 public abstract class RestController {
 
     protected static final String MAIN_ADDRESS = "/canal_api/";
 
+    public abstract String getEndpoint();
 
-    protected Map<String, String> mapParams(String rawParams){
+    protected void sendResponse(HttpExchange exchange, Response response){
 
-        if(rawParams == null || rawParams.isEmpty()){
-            return Collections.emptyMap();
+        byte[] body = response.getBody().getBytes();
+
+        try {
+            exchange.sendResponseHeaders(response.getCode(), body.length);
+
+            OutputStream outputStream = exchange.getResponseBody();
+            outputStream.write(body);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        return Pattern.compile("&").splitAsStream(rawParams).
-                map(pair -> pair.split("=")).
-                collect(Collectors.toMap(pair -> pair[0], pair -> pair[1]));
 
     }
 
+    public void handleRequest(HttpExchange exchange) throws IOException {
 
-    protected HttpRequestVo getRequestData(HttpExchange exchange){
+        ExchangeParams params = new ExchangeParams(exchange);
 
-        String context = this.getRequestContext(exchange);
-        return new HttpRequestVo(
-                context,
-                this.getRequestAddr(exchange),
-                this.getURIArgument(exchange, context));
+        Response response;
 
-    }
+        switch (params.getReqMethod().toLowerCase()){
+            case "get" -> response = get(params);
+            case "post" -> response = post(params);
+            case "put" -> response = put(params);
+            case "delete" -> response = delete(params);
+            default -> response = forbidden();
 
-    private String getRequestContext(HttpExchange exchange){
-        return exchange.getHttpContext().getPath().toLowerCase();
-    }
+        }
 
-    private String getURIArgument(HttpExchange exchange, String context){
-        return getRequestAddr(exchange).replaceFirst(context, "").replaceFirst("/", "");
-    }
+        this.sendResponse(exchange, response);
 
-    private String getRequestAddr(HttpExchange exchange){
-        return exchange.getRequestURI().toString();
-    }
+        this.close(exchange);
 
-    protected void sendOk(HttpExchange exchange) throws IOException {
-        exchange.sendResponseHeaders(200, 0);
     }
 
     protected void close(HttpExchange exchange){
         exchange.close();
     }
 
-    public abstract List<String> getAllControllerContexts();
+    protected Response get(ExchangeParams params){
+        return forbidden();
+    }
+
+    protected Response post(ExchangeParams params){
+        return forbidden();
+    }
+
+    protected Response put(ExchangeParams params){
+        return forbidden();
+    }
+
+    protected Response delete(ExchangeParams params){
+        return forbidden();
+    }
+
+    private Response forbidden(){
+        Response response = new Response();
+        response.setCode(401);
+        response.setBody("");
+
+        return response;
+    }
 }

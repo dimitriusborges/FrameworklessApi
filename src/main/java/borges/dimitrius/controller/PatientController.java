@@ -1,72 +1,105 @@
 package borges.dimitrius.controller;
 
-import borges.dimitrius.model.vo.HttpRequestVo;
+import borges.dimitrius.dao.PatientDao;
+import borges.dimitrius.model.entities.Patient;
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
 
 public class PatientController extends RestController implements HttpHandler {
 
-    public enum PatientCtx implements ControllerCtx {
-        REST_GET_ALL(RestController.MAIN_ADDRESS + "patient");
+        /*
+        GET
+            /patients -> get all
+            /patients/UUID -> get specific
+            /patients?arg&arg -> get filtered
+        POST
+            /patients/ -> create new
+        PUT
+            /patients/UUID -> update existing
+        DELETE
+            /patients/UUID -> delete existing
+         */
 
-        static{
-            Arrays.stream(PatientCtx.values()).forEach(k -> keyValDic.put(k.ctxPath, k));
-        }
+    private final Connection connection;
 
-        private final String ctxPath;
-
-        PatientCtx(String path){
-            this.ctxPath = path;
-        }
-
-        public String getCtxPath(){
-            return this.ctxPath;
-        }
-
-        @Override
-        public String toString(){
-            return this.ctxPath;
-        }
-
+    public PatientController(Connection connection){
+        this.connection = connection;
     }
 
-    private static final PatientController INSTANCE = new PatientController();
-
-    public static PatientController getInstance(){return PatientController.INSTANCE;}
-
-    private PatientController(){}
-
     @Override
-    public List<String> getAllControllerContexts() {
-        return ControllerCtx.getAllCtxs(List.of(PatientCtx.values()));
+    public String getEndpoint(){
+        return RestController.MAIN_ADDRESS + "patients";
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-
-        HttpRequestVo requestData = getRequestData(exchange);
-
-        System.out.println(requestData);
-
-        PatientCtx requestCtx = (PatientCtx) ControllerCtx.findByValue(requestData.getContext());
-
-        switch (requestCtx){
-
-            case REST_GET_ALL -> {
-                //TODO
-            }
-        }
-
-        this.sendOk(exchange);
-        this.close(exchange);
+        this.handleRequest(exchange);
 
     }
+
+    @Override
+    public Response get(ExchangeParams params){
+
+        try {
+            PatientDao patientDao = new PatientDao(connection);
+            Gson gson = new Gson();
+
+            String arg = params.getArg();
+
+            Response response = new Response();
+
+            //FIXME: Arguments will be way more complex than that, but I might not implement any further
+            if(arg.isEmpty()){
+
+                List<Patient> allPatients = patientDao.findAll();
+
+                if(allPatients.isEmpty()){
+                    response.setCode(204);
+                    response.setBody("");
+                }
+                else{
+                    List<String> patientsDto = allPatients.stream()
+                            .map(patient -> gson.toJson(patient.toDto())).toList();
+
+                    response.setCode(200);
+                    response.setBody(String.valueOf(patientsDto));
+                }
+
+            }
+
+            else{
+                Patient patient = patientDao.findById(Long.parseLong(arg));
+
+                if(patient == null){
+                    response.setCode(204);
+                    response.setBody("");
+                }
+                else {
+                    response.setCode(200);
+                    response.setBody(gson.toJson(patient.toDto()));
+                }
+
+
+            }
+
+            return response;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return new Response();
+    }
+
+
 
 
 }
