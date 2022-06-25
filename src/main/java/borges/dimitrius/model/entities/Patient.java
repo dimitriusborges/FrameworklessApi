@@ -1,12 +1,12 @@
 package borges.dimitrius.model.entities;
 
 import borges.dimitrius.model.dto.PatientDto;
-import borges.dimitrius.model.dto.Sharable;
+import borges.dimitrius.model.dto.SharableEntity;
 
 import java.util.Date;
 import java.util.Objects;
 
-public class Patient extends Entity implements Sharable {
+public class Patient extends SharableEntity{
 
     private Date birthDate;
     private String name;

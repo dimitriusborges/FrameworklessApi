@@ -137,7 +137,7 @@ public abstract class Dao {
 
     protected abstract List<? extends Entity> loadFromResultSet(ResultSet resultSet) throws SQLException;
 
-    public abstract List<? extends Entity> findAll() throws SQLException;
+    public abstract List<? extends Entity > findAll() throws SQLException;
 
     public abstract <E extends Entity> E findById(Long id) throws SQLException;
 

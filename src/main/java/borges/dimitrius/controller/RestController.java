@@ -1,9 +1,14 @@
 package borges.dimitrius.controller;
 
+import borges.dimitrius.dao.Dao;
+import borges.dimitrius.model.dto.SharableEntity;
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.SQLException;
+import java.util.List;
 
 public abstract class RestController {
 
@@ -69,6 +74,44 @@ public abstract class RestController {
         return forbidden();
     }
 
+    protected Response fetchAll(Dao entityDao) throws SQLException {
+        Gson gson = new Gson();
+        Response response = new Response();
+
+        List<SharableEntity> allRegs = (List<SharableEntity>) entityDao.findAll();
+
+        if(allRegs.isEmpty()){
+            response.setCode(204);
+            response.setBody("");
+        }
+        else{
+            List<String> dtoList = allRegs.stream().map( reg -> gson.toJson(reg.toDto())).toList();
+
+            response.setCode(200);
+            response.setBody(String.valueOf(dtoList));
+        }
+
+        return response;
+    }
+
+    public Response fethById(Dao entityDao, String args) throws SQLException {
+        Gson gson = new Gson();
+        Response response = new Response();
+
+        SharableEntity entity = entityDao.findById(Long.parseLong(args));
+
+        if(entity == null){
+            response.setCode(204);
+            response.setBody("");
+        }
+        else{
+            response.setCode(200);
+            response.setBody(gson.toJson(entity.toDto()));
+        }
+
+        return response;
+    }
+
     private Response forbidden(){
         Response response = new Response();
         response.setCode(401);
@@ -76,4 +119,6 @@ public abstract class RestController {
 
         return response;
     }
+
+
 }
