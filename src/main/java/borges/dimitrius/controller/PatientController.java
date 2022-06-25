@@ -1,9 +1,7 @@
 package borges.dimitrius.controller;
 
-import borges.dimitrius.dao.Dao;
 import borges.dimitrius.dao.PatientDao;
-import borges.dimitrius.model.dto.SharableEntity;
-import borges.dimitrius.model.entities.Entity;
+import borges.dimitrius.model.dto.PatientDto;
 import borges.dimitrius.model.entities.Patient;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
@@ -12,7 +10,6 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 
 public class PatientController extends RestController implements HttpHandler {
@@ -21,13 +18,13 @@ public class PatientController extends RestController implements HttpHandler {
     GET
         /patients -> get all
         /patients/UUID -> get specific
-        /patients?arg&arg -> get filtered
+        /patients?arg&arg -> get filtered (Not Implemented)
     POST
         /patients/ -> create new
     PUT
-        /patients/UUID -> update existing
+        /patients/UUID -> update existing (Not Implemented)
     DELETE
-        /patients/UUID -> delete existing
+        /patients/UUID -> delete existing (Not Implemented)
      */
 
     private final Connection connection;
@@ -59,10 +56,10 @@ public class PatientController extends RestController implements HttpHandler {
             //FIXME: Arguments will be way more complex than that, when doing a filtered query, for example.
             // Right now we are only dealing with single arg representing an Entity id. I might not implement any further
             if(args.isEmpty()){
-                response = fetchAll(patientDao);
+                response = fetchAllToResponse(patientDao);
             }
             else{
-                response = fethById(patientDao, args);
+                response = fetchByIdToResponse(patientDao, args);
             }
 
             return response;
@@ -71,10 +68,32 @@ public class PatientController extends RestController implements HttpHandler {
             e.printStackTrace();
         }
 
-        return new Response();
+        return new Response(400, "");
     }
 
+    @Override
+    protected Response post(ExchangeParams params) {
 
+        String reqBody = params.getReqBody();
 
+        if(reqBody.isEmpty()){
+            return new Response(400, "");
+        }
 
+        Patient patient = (Patient) getEntityFromBody(reqBody, new PatientDto());
+
+        PatientDao patientDao = new PatientDao(connection);
+
+        try {
+            patientDao.insert(patient);
+
+            return new Response(200, "");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            return new Response(500, "");
+        }
+
+    }
 }

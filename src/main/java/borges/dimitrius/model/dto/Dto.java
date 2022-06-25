@@ -1,5 +1,7 @@
 package borges.dimitrius.model.dto;
 
-//Marker
+
 public interface Dto {
+
+    <E extends TransferableEntity> E toEntity();
 }

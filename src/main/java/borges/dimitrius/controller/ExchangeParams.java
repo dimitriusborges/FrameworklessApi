@@ -2,6 +2,8 @@ package borges.dimitrius.controller;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -13,33 +15,45 @@ public class ExchangeParams {
     private final String addr;
     private final String arg;
     private final String reqMethod;
+    private final String reqBody;
 
     private final HttpExchange exchange;
 
     public ExchangeParams(HttpExchange exchange){
         this.exchange = exchange;
 
-        this.context = getRequestContext();
-        this.addr = getRequestAddr();
-        this.arg = getURIArgument();
-        this.reqMethod = getRequestMethod();
+        this.context = this.extractRequestContext();
+        this.addr = this.extractRequestAddr();
+        this.arg = this.extractURIArgument();
+        this.reqMethod = this.extractRequestMethod();
+        this.reqBody = this.extractReqBody();
 
     }
 
-    private String getRequestContext(){
+    private String extractRequestContext(){
         return exchange.getHttpContext().getPath().toLowerCase();
     }
 
-    private String getURIArgument(){
-        return getRequestAddr().replaceFirst(context, "").replaceFirst("/", "");
+    private String extractURIArgument(){
+        return extractRequestAddr().replaceFirst(context, "").replaceFirst("/", "");
     }
 
-    private String getRequestAddr(){
+    private String extractRequestAddr(){
         return exchange.getRequestURI().toString();
     }
 
-    private String getRequestMethod(){
+    private String extractRequestMethod(){
         return exchange.getRequestMethod();
+    }
+
+    private String extractReqBody(){
+        try {
+            return new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 
     protected Map<String, String> mapParams(String rawParams){
@@ -68,6 +82,10 @@ public class ExchangeParams {
 
     public String getReqMethod() {
         return reqMethod;
+    }
+
+    public String getReqBody() {
+        return reqBody;
     }
 
     @Override

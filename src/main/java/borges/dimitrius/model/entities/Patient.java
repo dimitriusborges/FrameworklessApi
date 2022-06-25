@@ -1,12 +1,12 @@
 package borges.dimitrius.model.entities;
 
 import borges.dimitrius.model.dto.PatientDto;
-import borges.dimitrius.model.dto.SharableEntity;
+import borges.dimitrius.model.dto.TransferableEntity;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Objects;
 
-public class Patient extends SharableEntity{
+public class Patient extends TransferableEntity {
 
     private Date birthDate;
     private String name;

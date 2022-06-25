@@ -1,7 +1,8 @@
 package borges.dimitrius.controller;
 
 import borges.dimitrius.dao.Dao;
-import borges.dimitrius.model.dto.SharableEntity;
+import borges.dimitrius.model.dto.Dto;
+import borges.dimitrius.model.dto.TransferableEntity;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -15,23 +16,6 @@ public abstract class RestController {
     protected static final String MAIN_ADDRESS = "/canal_api/";
 
     public abstract String getEndpoint();
-
-    protected void sendResponse(HttpExchange exchange, Response response){
-
-        byte[] body = response.getBody().getBytes();
-
-        try {
-            exchange.sendResponseHeaders(response.getCode(), body.length);
-
-            OutputStream outputStream = exchange.getResponseBody();
-            outputStream.write(body);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
 
     public void handleRequest(HttpExchange exchange) throws IOException {
 
@@ -51,6 +35,23 @@ public abstract class RestController {
         this.sendResponse(exchange, response);
 
         this.close(exchange);
+
+    }
+
+    protected void sendResponse(HttpExchange exchange, Response response){
+
+        byte[] body = response.getBody().getBytes();
+
+        try {
+            exchange.sendResponseHeaders(response.getCode(), body.length);
+
+            OutputStream outputStream = exchange.getResponseBody();
+            outputStream.write(body);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -74,11 +75,15 @@ public abstract class RestController {
         return forbidden();
     }
 
-    protected Response fetchAll(Dao entityDao) throws SQLException {
+    private Response forbidden(){
+        return new Response(401, "");
+    }
+
+    protected Response fetchAllToResponse(Dao entityDao) throws SQLException {
         Gson gson = new Gson();
         Response response = new Response();
 
-        List<SharableEntity> allRegs = (List<SharableEntity>) entityDao.findAll();
+        List<TransferableEntity> allRegs = (List<TransferableEntity>) entityDao.findAll();
 
         if(allRegs.isEmpty()){
             response.setCode(204);
@@ -94,11 +99,11 @@ public abstract class RestController {
         return response;
     }
 
-    public Response fethById(Dao entityDao, String args) throws SQLException {
+    public Response fetchByIdToResponse(Dao entityDao, String args) throws SQLException {
         Gson gson = new Gson();
         Response response = new Response();
 
-        SharableEntity entity = entityDao.findById(Long.parseLong(args));
+        TransferableEntity entity = entityDao.findById(Long.parseLong(args));
 
         if(entity == null){
             response.setCode(204);
@@ -112,13 +117,15 @@ public abstract class RestController {
         return response;
     }
 
-    private Response forbidden(){
-        Response response = new Response();
-        response.setCode(401);
-        response.setBody("");
+    public TransferableEntity getEntityFromBody(String reqBody, Dto dtoTransformer){
+        Gson gson = new Gson();
 
-        return response;
+        dtoTransformer = gson.fromJson(reqBody, dtoTransformer.getClass());
+
+        return dtoTransformer.toEntity();
     }
+
+
 
 
 }
