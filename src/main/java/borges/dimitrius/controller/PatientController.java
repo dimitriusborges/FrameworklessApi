@@ -3,7 +3,6 @@ package borges.dimitrius.controller;
 import borges.dimitrius.dao.PatientDao;
 import borges.dimitrius.model.dto.PatientDto;
 import borges.dimitrius.model.entities.Patient;
-import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -12,7 +11,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 
-public class PatientController extends RestController implements HttpHandler {
+public class PatientController extends RestController implements HttpHandler, TransferableEntityHandler {
 
     /*
     GET
@@ -22,9 +21,9 @@ public class PatientController extends RestController implements HttpHandler {
     POST
         /patients/ -> create new
     PUT
-        /patients/UUID -> update existing (Not Implemented)
+        /patients/UUID -> update existing (Not Implemented yet)
     DELETE
-        /patients/UUID -> delete existing (Not Implemented)
+        /patients/UUID -> delete existing (Not Implemented yet)
      */
 
     private final Connection connection;
@@ -66,9 +65,9 @@ public class PatientController extends RestController implements HttpHandler {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return new Response(500, "");
         }
 
-        return new Response(400, "");
     }
 
     @Override
@@ -95,5 +94,21 @@ public class PatientController extends RestController implements HttpHandler {
             return new Response(500, "");
         }
 
+    }
+
+    @Override
+    protected Response delete(ExchangeParams params) {
+        if(params.getArg().isEmpty()){
+            return new Response(400, "");
+        }
+        else{
+            try {
+                return this.deleteByIdToResponse(new PatientDao(connection), params.getArg());
+            } catch (SQLException e) {
+                e.printStackTrace();
+
+                return new Response(500, "");
+            }
+        }
     }
 }

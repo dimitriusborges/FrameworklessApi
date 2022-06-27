@@ -1,15 +1,8 @@
 package borges.dimitrius.controller;
-
-import borges.dimitrius.dao.Dao;
-import borges.dimitrius.model.dto.Dto;
-import borges.dimitrius.model.dto.TransferableEntity;
-import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.SQLException;
-import java.util.List;
 
 public abstract class RestController {
 
@@ -28,7 +21,7 @@ public abstract class RestController {
             case "post" -> response = post(params);
             case "put" -> response = put(params);
             case "delete" -> response = delete(params);
-            default -> response = forbidden();
+            default -> response = forbiddenRequest();
 
         }
 
@@ -43,15 +36,16 @@ public abstract class RestController {
         byte[] body = response.getBody().getBytes();
 
         try {
-            exchange.sendResponseHeaders(response.getCode(), body.length);
+            exchange.sendResponseHeaders(response.getCode(), body.length > 0 ? body.length : -1);
 
-            OutputStream outputStream = exchange.getResponseBody();
-            outputStream.write(body);
+            if(body.length > 0) {
+                OutputStream outputStream = exchange.getResponseBody();
+                outputStream.write(body);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
     }
 
@@ -60,72 +54,23 @@ public abstract class RestController {
     }
 
     protected Response get(ExchangeParams params){
-        return forbidden();
+        return forbiddenRequest();
     }
 
     protected Response post(ExchangeParams params){
-        return forbidden();
+        return forbiddenRequest();
     }
 
     protected Response put(ExchangeParams params){
-        return forbidden();
+        return forbiddenRequest();
     }
 
     protected Response delete(ExchangeParams params){
-        return forbidden();
+        return forbiddenRequest();
     }
 
-    private Response forbidden(){
+    protected Response forbiddenRequest(){
         return new Response(401, "");
     }
-
-    protected Response fetchAllToResponse(Dao entityDao) throws SQLException {
-        Gson gson = new Gson();
-        Response response = new Response();
-
-        List<TransferableEntity> allRegs = (List<TransferableEntity>) entityDao.findAll();
-
-        if(allRegs.isEmpty()){
-            response.setCode(204);
-            response.setBody("");
-        }
-        else{
-            List<String> dtoList = allRegs.stream().map( reg -> gson.toJson(reg.toDto())).toList();
-
-            response.setCode(200);
-            response.setBody(String.valueOf(dtoList));
-        }
-
-        return response;
-    }
-
-    public Response fetchByIdToResponse(Dao entityDao, String args) throws SQLException {
-        Gson gson = new Gson();
-        Response response = new Response();
-
-        TransferableEntity entity = entityDao.findById(Long.parseLong(args));
-
-        if(entity == null){
-            response.setCode(204);
-            response.setBody("");
-        }
-        else{
-            response.setCode(200);
-            response.setBody(gson.toJson(entity.toDto()));
-        }
-
-        return response;
-    }
-
-    public TransferableEntity getEntityFromBody(String reqBody, Dto dtoTransformer){
-        Gson gson = new Gson();
-
-        dtoTransformer = gson.fromJson(reqBody, dtoTransformer.getClass());
-
-        return dtoTransformer.toEntity();
-    }
-
-
-
 
 }
