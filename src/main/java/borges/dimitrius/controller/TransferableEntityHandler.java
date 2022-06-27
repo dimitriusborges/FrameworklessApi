@@ -6,59 +6,45 @@ import borges.dimitrius.model.dto.TransferableEntity;
 import com.google.gson.Gson;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface TransferableEntityHandler {
 
 
-    default Response fetchAllToResponse(Dao entityDao) throws SQLException {
+    default List<String> fetchAllToTransfer(Dao entityDao) throws SQLException {
 
         Gson gson = new Gson();
-        Response response = new Response();
 
         List<TransferableEntity> allRegs = (List<TransferableEntity>) entityDao.findAll();
 
         if(allRegs.isEmpty()){
-            response.setCode(204);
-            response.setBody("");
+            return new ArrayList<>();
         }
         else{
-            List<String> dtoList = allRegs.stream().map( reg -> gson.toJson(reg.toDto())).toList();
-
-            response.setCode(200);
-            response.setBody(String.valueOf(dtoList));
+            return allRegs.stream().map( reg -> gson.toJson(reg.toDto())).toList();
         }
-
-        return response;
     }
 
-    default Response fetchByIdToResponse(Dao entityDao, String args) throws SQLException {
+    default String fetchByIdToTransfer(Dao entityDao, String id) throws SQLException {
         Gson gson = new Gson();
-        Response response = new Response();
 
-        TransferableEntity entity = entityDao.findById(Long.parseLong(args));
+        TransferableEntity entity = fetchById(entityDao, id);
 
         if(entity == null){
-            response.setCode(204);
-            response.setBody("");
+            return "";
         }
         else{
-            response.setCode(200);
-            response.setBody(gson.toJson(entity.toDto()));
+            return gson.toJson(entity.toDto());
         }
-
-        return response;
     }
 
-    default Response deleteByIdToResponse(Dao entityDao, String id) throws SQLException {
-        Response response = new Response();
+    default TransferableEntity fetchById(Dao entityDao, String id) throws SQLException {
+        return entityDao.findById(Long.parseLong(id));
+    }
 
+    default void deleteById(Dao entityDao, String id) throws SQLException {
         entityDao.deleteById(Long.parseLong(id));
-        response.setCode(200);
-        response.setBody("");
-
-
-        return response;
     }
 
     default TransferableEntity getEntityFromBody(String reqBody, Dto dtoTransformer){

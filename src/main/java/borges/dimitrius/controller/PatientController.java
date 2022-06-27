@@ -9,6 +9,7 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class PatientController extends RestController implements HttpHandler, TransferableEntityHandler {
@@ -55,10 +56,19 @@ public class PatientController extends RestController implements HttpHandler, Tr
             //FIXME: Arguments will be way more complex than that, when doing a filtered query, for example.
             // Right now we are only dealing with single arg representing an Entity id. I might not implement any further
             if(args.isEmpty()){
-                response = fetchAllToResponse(patientDao);
+                List<String> responseBody = fetchAllToTransfer(patientDao);
+                response = new Response(200, String.valueOf(responseBody));
+
             }
             else{
-                response = fetchByIdToResponse(patientDao, args);
+                String result = fetchByIdToTransfer(patientDao, args);
+
+                if(result.isEmpty()){
+                    response = new Response(204, "");
+                }
+                else{
+                    response = new Response(200, result);
+                }
             }
 
             return response;
@@ -97,13 +107,54 @@ public class PatientController extends RestController implements HttpHandler, Tr
     }
 
     @Override
+    protected Response put(ExchangeParams params){
+
+        if(params.getArg().isEmpty()){
+            return new Response(204, "");
+        }
+
+        String reqBody = params.getReqBody();
+
+        if(reqBody.isEmpty()){
+            return new Response(400, "");
+        }
+
+        Patient patientNewData = (Patient) this.getEntityFromBody(reqBody, new PatientDto());
+
+        try {
+
+            PatientDao patientDao = new PatientDao(connection);
+
+            Patient patientToUpdate = (Patient) fetchById(patientDao, params.getArg());
+
+            if(patientToUpdate != null){
+
+                patientToUpdate.copyFrom(patientNewData);
+
+                patientDao.updateById(patientToUpdate);
+
+                return new Response(200, "");
+            }
+            else{
+                return new Response(204, "");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            return  new Response(500, "");
+        }
+    }
+
+    @Override
     protected Response delete(ExchangeParams params) {
         if(params.getArg().isEmpty()){
             return new Response(400, "");
         }
         else{
             try {
-                return this.deleteByIdToResponse(new PatientDao(connection), params.getArg());
+                this.deleteById(new PatientDao(connection), params.getArg());
+                return  new Response(200, "");
             } catch (SQLException e) {
                 e.printStackTrace();
 

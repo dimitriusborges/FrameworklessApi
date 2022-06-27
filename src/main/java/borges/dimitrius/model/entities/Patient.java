@@ -22,6 +22,20 @@ public class Patient extends TransferableEntity {
         this.name = name;
     }
 
+    public void copyFrom(Patient patientToCopy){
+
+        Date birthDate = patientToCopy.getBirthDate();
+        if(birthDate != null){
+            this.birthDate = birthDate;
+        }
+
+        String name = patientToCopy.getName();
+
+        if(name != null && !name.isEmpty()){
+            this.name = name;
+        }
+    }
+
     public Date getBirthDate() {
         return birthDate;
     }
