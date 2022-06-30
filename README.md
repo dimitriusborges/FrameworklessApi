@@ -1,10 +1,10 @@
 ## First, the disclaimer
 
-Since I'm migrating from embedded software development to Back-end, I'm starting a series of projects, this one here being the very first one, to learn and practice. 
+Since I'm migrating from embedded software development to work with Backend full-time, I'm starting a series of projects, this one here being the very first one, to learn and practice. 
 
 I have no compromise to keep it fully functional or to make something quasi state-of-the-art, but I do want to make everything **"right"**, i.e., with good practices. 
 
-If anything looks "wrong" or "silly: it might be because I dunno (yet) how to make it properly or because I'm _experimenting_ to see how things unfold. 
+If anything looks "wrong" or "silly", it might be because I dunno (yet) how to make it properly or because I'm _experimenting_ to see how things unfold. 
 
 # FrameworklessApi
 
@@ -26,7 +26,10 @@ The service will have data representation of:
   * File
   * Reamers
 * Most common symptoms
-* Treated tooth
+* Treatment details, like:
+  * Tooth
+  * instrument used
+* Reported symptoms
 
 In the future, a proper schema will be added on this documentation.
 
