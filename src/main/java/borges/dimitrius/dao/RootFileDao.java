@@ -15,7 +15,7 @@ public class RootFileDao extends Dao{
 
     private enum RootFileCols {
         ID("id"),
-        NAMETYPE("name_type"),
+        TYPENAME("type_name"),
         BRAND("brand");
 
         private final String colName;
@@ -70,7 +70,7 @@ public class RootFileDao extends Dao{
 
         Map<String, Object> valMapping = new HashMap<>();
 
-        valMapping.put(RootFileCols.NAMETYPE.colName, rootFile.getNameType());
+        valMapping.put(RootFileCols.TYPENAME.colName, rootFile.getTypeName());
         valMapping.put(RootFileCols.BRAND.colName, rootFile.getBrand());
 
 

@@ -1,29 +1,33 @@
 package borges.dimitrius.model.entities;
 
+import borges.dimitrius.model.dto.Dto;
+import borges.dimitrius.model.dto.RootFileDto;
+import borges.dimitrius.model.dto.TransferableEntity;
+
 import java.util.Objects;
 
-public class RootFile extends Entity{
+public class RootFile extends TransferableEntity {
 
-    private String nameType;
+    private String typeName;
     private String brand;
 
     public RootFile(Long id, String nameType, String brand) {
         this.id = id;
-        this.nameType = nameType;
+        this.typeName = nameType;
         this.brand = brand;
     }
 
     public RootFile(String nameType, String brand){
-        this.nameType = nameType;
+        this.typeName = nameType;
         this.brand = brand;
     }
 
-    public String getNameType() {
-        return nameType;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setNameType(String nameType) {
-        this.nameType = nameType;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
     public String getBrand() {
@@ -38,7 +42,7 @@ public class RootFile extends Entity{
     public String toString() {
         return "RootFile{" +
                 "id='" + id + '\'' +
-                "nameType='" + nameType + '\'' +
+                "nameType='" + typeName + '\'' +
                 ", brand='" + brand + '\'' +
                 '}';
     }
@@ -48,11 +52,33 @@ public class RootFile extends Entity{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RootFile rootFile = (RootFile) o;
-        return getNameType().equals(rootFile.getNameType()) && getBrand().equals(rootFile.getBrand());
+        return getTypeName().equals(rootFile.getTypeName()) && getBrand().equals(rootFile.getBrand());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getNameType(), getBrand());
+        return Objects.hash(getTypeName(), getBrand());
+    }
+
+    @Override
+    public Dto toDto() {
+        return new RootFileDto(this.id.toString(), this.typeName, this.brand);
+    }
+
+    @Override
+    public <T extends TransferableEntity> void copyFrom(T entityToCopy) {
+        RootFile rootFileToCopy = (RootFile) entityToCopy;
+
+        String typeName = rootFileToCopy.getTypeName();
+
+        if(typeName != null){
+            this.typeName = typeName;
+        }
+
+        String brand = rootFileToCopy.getBrand();
+
+        if (brand != null){
+            this.brand = brand;
+        }
     }
 }

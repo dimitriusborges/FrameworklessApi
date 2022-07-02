@@ -27,10 +27,9 @@ class PatientControllerTest extends PatientTest {
     public void preparedatabase() {
         super.preparedatabase();
 
-        try {
-            connection = DbConnectionFactoryTest.getConnection();
+        patientController = new PatientController(this.connection);
 
-            patientController = new PatientController(this.connection);
+        try {
 
             Statement stmt = connection.createStatement();
             stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
@@ -80,8 +79,6 @@ class PatientControllerTest extends PatientTest {
         if(receivedPatients.size() != 2){
             fail("Was expecting two patient registers, but " + receivedPatients.size() + " were found.");
         }
-
-        System.out.println(receivedPatients);
 
         assertEquals(receivedPatients.get(0).toEntity(), this.defaultPatient);
         assertEquals(receivedPatients.get(1).toEntity(), this.defaultPatient2);

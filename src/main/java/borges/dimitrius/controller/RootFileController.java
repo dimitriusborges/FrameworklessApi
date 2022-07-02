@@ -1,8 +1,8 @@
 package borges.dimitrius.controller;
 
-import borges.dimitrius.dao.PatientDao;
-import borges.dimitrius.model.dto.PatientDto;
-import borges.dimitrius.model.entities.Patient;
+import borges.dimitrius.dao.RootFileDao;
+import borges.dimitrius.model.dto.RootFileDto;
+import borges.dimitrius.model.entities.RootFile;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -11,57 +11,52 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-
-public class PatientController extends RestController implements HttpHandler, TransferableEntityHandler {
+public class RootFileController extends RestController implements HttpHandler, TransferableEntityHandler {
 
     /*
     GET
-        /patients -> get all
-        /patients/UUID -> get specific
-        /patients?arg&arg -> get filtered (Not Implemented)
+        /rootfile -> get all
+        /rootfile/UUID -> get specific
+        /rootfile?arg&arg -> get filtered (Not Implemented)
     POST
-        /patients/ -> create new
+        /rootfile/ -> create new
     PUT
-        /patients/UUID -> update existing
+        /rootfile/UUID -> update existing
     DELETE
-        /patients/UUID -> delete existing
+        /rootfile/UUID -> delete existing
      */
 
     private final Connection connection;
 
-    public PatientController(Connection connection){
+    public RootFileController(Connection connection) {
         this.connection = connection;
     }
 
     @Override
-    public String getEndpoint(){
-        return RestController.MAIN_ADDRESS + "patients";
+    public String getEndpoint() {
+        return RestController.MAIN_ADDRESS + "rootfiles";
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         this.handleRequest(exchange);
-
     }
 
     @Override
     public Response get(ExchangeParams params){
 
         try {
-            PatientDao patientDao = new PatientDao(this.connection);
+            RootFileDao rootFileDao = new RootFileDao(this.connection);
 
             Response response;
             String args = params.getArg();
 
-            //FIXME: Arguments will be way more complex than that, when doing a filtered query, for example.
-            // Right now we are only dealing with single arg representing an Entity id. I might not implement any further
             if(args.isEmpty()){
-                List<String> responseBody = fetchAllToTransfer(patientDao);
-                response = new Response(200, String.valueOf(responseBody));
-
+               List<String> responseBody = fetchAllToTransfer(rootFileDao);
+               response = new Response(200, String.valueOf(responseBody));
             }
             else{
-                String result = fetchByIdToTransfer(patientDao, args);
+                String result = fetchByIdToTransfer(rootFileDao, args);
 
                 if(result.isEmpty()){
                     response = new Response(204, "");
@@ -77,38 +72,33 @@ public class PatientController extends RestController implements HttpHandler, Tr
             e.printStackTrace();
             return new Response(500, "");
         }
-
     }
 
     @Override
-    protected Response post(ExchangeParams params) {
-
+    public Response post(ExchangeParams params){
         String reqBody = params.getReqBody();
 
         if(reqBody.isEmpty()){
             return new Response(400, "");
         }
 
-        Patient patient = (Patient) getEntityFromBody(reqBody, new PatientDto());
+        RootFile rootFile = (RootFile) getEntityFromBody(reqBody, new RootFileDto());
 
-        PatientDao patientDao = new PatientDao(connection);
+        RootFileDao rootFileDao = new RootFileDao(this.connection);
 
-        try {
-            patientDao.insert(patient);
+        try{
+            rootFileDao.insert(rootFile);
 
             return new Response(200, "");
 
         } catch (SQLException e) {
             e.printStackTrace();
-
             return new Response(500, "");
         }
-
     }
 
     @Override
-    protected Response put(ExchangeParams params){
-
+    protected Response put(ExchangeParams params) {
         if(params.getArg().isEmpty()){
             return new Response(204, "");
         }
@@ -119,25 +109,24 @@ public class PatientController extends RestController implements HttpHandler, Tr
             return new Response(400, "");
         }
 
-        Patient patientNewData = (Patient) this.getEntityFromBody(reqBody, new PatientDto());
+        RootFile rootFileNewData = (RootFile) this.getEntityFromBody(reqBody, new RootFileDto());
 
         try {
+            RootFileDao rootFileDao = new RootFileDao(this.connection);
 
-            PatientDao patientDao = new PatientDao(connection);
+            RootFile rootFileToUpdate = (RootFile) fetchById(rootFileDao, params.getArg());
 
-            Patient patientToUpdate = (Patient) fetchById(patientDao, params.getArg());
+            if(rootFileToUpdate != null){
+                rootFileToUpdate.copyFrom(rootFileNewData);
 
-            if(patientToUpdate != null){
-
-                patientToUpdate.copyFrom(patientNewData);
-
-                patientDao.updateById(patientToUpdate);
+                rootFileDao.updateById(rootFileToUpdate);
 
                 return new Response(200, "");
             }
             else{
                 return new Response(204, "");
             }
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -151,10 +140,10 @@ public class PatientController extends RestController implements HttpHandler, Tr
         if(params.getArg().isEmpty()){
             return new Response(400, "");
         }
-        else{
-            try {
-                this.deleteById(new PatientDao(connection), params.getArg());
-                return  new Response(200, "");
+        else {
+            try{
+                this.deleteById(new RootFileDao(this.connection), params.getArg());
+                return new Response(200, "");
             } catch (SQLException e) {
                 e.printStackTrace();
 

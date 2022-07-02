@@ -22,7 +22,10 @@ public class Patient extends TransferableEntity {
         this.name = name;
     }
 
-    public void copyFrom(Patient patientToCopy){
+    @Override
+    public <T extends TransferableEntity> void copyFrom(T entityToCopy){
+
+        Patient patientToCopy = (Patient) entityToCopy;
 
         Date birthDate = patientToCopy.getBirthDate();
         if(birthDate != null){
