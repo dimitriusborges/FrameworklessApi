@@ -1,58 +1,26 @@
 package borges.dimitrius.dao;
 
-import borges.dimitrius.factory.DbConnectionFactoryTest;
 import borges.dimitrius.model.entities.Patient;
+import borges.dimitrius.setup.PatientTest;
 import org.junit.jupiter.api.*;
 
-
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class PatientDaoTest {
-
-    private final Patient defaultPatient = new Patient(Date.valueOf("1970-01-1"), "Default");
-    private PatientDao patientDao;
-
-    @BeforeEach
-    public void preparedatabase(){
-
-        try {
-            Connection connection = DbConnectionFactoryTest.getConnection();
-            this.patientDao = new PatientDao(connection);
-
-            Statement stmt = connection.createStatement();
-
-            stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-
-            stmt.execute("TRUNCATE treatment");
-            stmt.execute("TRUNCATE patient_symptom");
-
-            stmt.execute("TRUNCATE patient");
-            stmt.execute("INSERT INTO patient (birthdate, name) values('1970-01-01', 'Default')");
-
-
-            stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
-
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-        }
-    }
+public class PatientDaoTest extends PatientTest {
 
     @Test
     public void insertNewPatient(){
         Patient newPatient = new Patient(Date.valueOf("2022-01-01"), "NewPatient");
 
         try {
-            patientDao.insert(newPatient);
+            this.patientDao.insert(newPatient);
 
-            List<Patient> patients = patientDao.findAll();
+            List<Patient> patients = this.patientDao.findAll();
 
             //waiting at most one row;
             if(patients.size() > 2){

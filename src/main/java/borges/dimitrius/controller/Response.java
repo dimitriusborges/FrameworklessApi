@@ -27,4 +27,12 @@ public class Response {
     public void setBody(String body) {
         this.body = body;
     }
+
+    @Override
+    public String toString() {
+        return "Response{" +
+                "code=" + code +
+                ", body='" + body + '\'' +
+                '}';
+    }
 }

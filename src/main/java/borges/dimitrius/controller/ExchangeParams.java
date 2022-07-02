@@ -19,6 +19,15 @@ public class ExchangeParams {
 
     private final HttpExchange exchange;
 
+    public ExchangeParams(String context, String addr, String arg, String reqMethod, String reqBody, HttpExchange exchange) {
+        this.context = context;
+        this.addr = addr;
+        this.arg = arg;
+        this.reqMethod = reqMethod;
+        this.reqBody = reqBody;
+        this.exchange = exchange;
+    }
+
     public ExchangeParams(HttpExchange exchange){
         this.exchange = exchange;
 
