@@ -1,8 +1,12 @@
 package borges.dimitrius.model.entities;
 
+import borges.dimitrius.model.dto.Dto;
+import borges.dimitrius.model.dto.StapleDto;
+import borges.dimitrius.model.dto.TransferableEntity;
+
 import java.util.Objects;
 
-public class Staple extends Entity{
+public class Staple extends TransferableEntity {
 
     private String type;
 
@@ -42,5 +46,21 @@ public class Staple extends Entity{
     @Override
     public int hashCode() {
         return Objects.hash(getType());
+    }
+
+    @Override
+    public Dto toDto() {
+        return new StapleDto(this.id.toString(), this.type);
+    }
+
+    @Override
+    public <T extends TransferableEntity> void copyFrom(T entityToCopy) {
+        Staple stapleToCopy = (Staple) entityToCopy;
+
+        String type = stapleToCopy.getType();
+
+        if(type != null){
+            this.type = type;
+        }
     }
 }

@@ -85,7 +85,6 @@ class PatientControllerTest extends PatientTest {
 
     }
 
-
     @Test
     public void insertNewPatient(){
 

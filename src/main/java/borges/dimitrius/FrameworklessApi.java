@@ -2,6 +2,7 @@ package borges.dimitrius;
 
 import borges.dimitrius.controller.PatientController;
 import borges.dimitrius.controller.RootFileController;
+import borges.dimitrius.controller.StapleController;
 import borges.dimitrius.factory.DbConnectionFactory;
 import com.sun.net.httpserver.HttpServer;
 
@@ -18,9 +19,11 @@ public class FrameworklessApi {
 
             PatientController patientController = new PatientController(DbConnectionFactory.getConnection());
             RootFileController rootFileController = new RootFileController(DbConnectionFactory.getConnection());
+            StapleController stapleController = new StapleController(DbConnectionFactory.getConnection());
 
             server.createContext(patientController.getEndpoint(), patientController);
             server.createContext(rootFileController.getEndpoint(), rootFileController);
+            server.createContext(stapleController.getEndpoint(), stapleController);
 
             server.setExecutor(null);
             server.start();

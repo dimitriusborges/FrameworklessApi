@@ -46,7 +46,9 @@ public class PatientDto implements Dto{
 
     @Override
     public Patient toEntity() {
-        return new Patient(Date.valueOf(this.birthdate), this.name);
+        return new Patient(this.id != null? Long.parseLong(this.id): 0,
+                this.birthdate != null? Date.valueOf(this.birthdate): null,
+                this.name);
     }
 
     @Override

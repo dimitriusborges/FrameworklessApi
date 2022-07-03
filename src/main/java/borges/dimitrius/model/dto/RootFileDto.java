@@ -42,7 +42,9 @@ public class RootFileDto implements Dto{
 
     @Override
     public RootFile toEntity(){
-        return new RootFile(this.nameType, this.brand);
+        return new RootFile(this.id != null? Long.parseLong(this.id): 0,
+                this.nameType,
+                this.brand);
     }
 
     @Override

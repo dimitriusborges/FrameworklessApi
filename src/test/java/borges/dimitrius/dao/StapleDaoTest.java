@@ -3,6 +3,7 @@ package borges.dimitrius.dao;
 import borges.dimitrius.factory.DbConnectionFactoryTest;
 import borges.dimitrius.model.entities.Entity;
 import borges.dimitrius.model.entities.Staple;
+import borges.dimitrius.setup.StapleTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,34 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class StapleDaoTest {
-
-    private final Staple defaultStaple = new Staple("Type1A");
-    private StapleDao stapleDao;
-
-    @BeforeEach
-    public void prepareDatabase(){
-        try {
-
-            Connection connection = DbConnectionFactoryTest.getConnection();
-
-            this.stapleDao = new StapleDao(connection);
-
-            Statement stmt = connection.createStatement();
-
-            stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-
-            stmt.execute("TRUNCATE treatment");
-            stmt.execute("TRUNCATE staple");
-            stmt.execute("INSERT INTO staple (type) values('Type1A')");
-
-            stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
-
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-        }
-    }
+class StapleDaoTest extends StapleTest {
 
     @Test
     public void insertNewStaple(){
