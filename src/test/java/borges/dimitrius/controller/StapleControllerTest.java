@@ -103,7 +103,7 @@ class StapleControllerTest extends StapleTest {
     @Test
     public void updateExistingStaple(){
         ExchangeParams exchangeParamsMock = new ExchangeParams(this.stapleController.getEndpoint(),
-                this.stapleController.getEndpoint(), "1", "post",
+                this.stapleController.getEndpoint(), "1", "put",
                 "{\"type\": \"Updated\"}", null);
 
         Staple updatingStaple = new Staple(1L, "Updated");
@@ -122,7 +122,7 @@ class StapleControllerTest extends StapleTest {
     @Test
     public void deleteExistingStaple(){
         ExchangeParams exchangeParamsMock = new ExchangeParams(this.stapleController.getEndpoint(),
-                this.stapleController.getEndpoint(), "2", "post","", null);
+                this.stapleController.getEndpoint(), "2", "delete","", null);
 
         Response response = this.stapleController.delete(exchangeParamsMock);
         assertEquals(response.getCode(), 200);

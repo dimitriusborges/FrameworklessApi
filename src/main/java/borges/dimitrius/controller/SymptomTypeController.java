@@ -1,8 +1,8 @@
 package borges.dimitrius.controller;
 
-import borges.dimitrius.dao.StapleDao;
-import borges.dimitrius.model.dto.StapleDto;
-import borges.dimitrius.model.entities.Staple;
+import borges.dimitrius.dao.SymptomTypeDao;
+import borges.dimitrius.model.dto.SymptomTypeDto;
+import borges.dimitrius.model.entities.SymptomType;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -11,57 +11,38 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class StapleController extends RestController implements HttpHandler, TransferableEntityHandler {
-
-      /*
-    GET
-        /staples -> get all
-        /staples/UUID -> get specific
-        /staples?arg&arg -> get filtered (Not Implemented)
-    POST
-        /staples/ -> create new
-    PUT
-        /staples/UUID -> update existing
-    DELETE
-        /staples/UUID -> delete existing
-     */
-
+public class SymptomTypeController extends RestController implements HttpHandler, TransferableEntityHandler {
 
     private final Connection connection;
 
-    public StapleController(Connection connection){this.connection = connection;}
+    public SymptomTypeController(Connection connection) {
+        this.connection = connection;
+    }
 
     @Override
     public String getEndpoint() {
-        return RestController.MAIN_ADDRESS + "staples";
+        return RestController.MAIN_ADDRESS + "symptomtypes";
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         this.handleRequest(exchange);
+
     }
 
     @Override
     protected Response get(ExchangeParams params) {
-
         try{
-            StapleDao stapleDao = new StapleDao(this.connection);
-
+            SymptomTypeDao symptomTypeDao = new SymptomTypeDao(this.connection);
             Response response;
             String args = params.getArg();
 
             if(args.isEmpty()){
-                List<String> responseBody = fetchAllToTransfer(stapleDao);
-
-                if(responseBody.isEmpty()){
-                    response = new Response(204, "");
-                }
-                else {
-                    response  = new Response(200, String.valueOf(responseBody));
-                }
+                List<String> responseBody = fetchAllToTransfer(symptomTypeDao);
+                response = new Response(200, String.valueOf(responseBody));
             }
             else{
-                String result = fetchByIdToTransfer(stapleDao, args);
+                String result = fetchByIdToTransfer(symptomTypeDao, args);
 
                 if(result.isEmpty()){
                     response = new Response(204, "");
@@ -70,7 +51,9 @@ public class StapleController extends RestController implements HttpHandler, Tra
                     response = new Response(200, result);
                 }
             }
+
             return response;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return new Response(500, "");
@@ -82,56 +65,52 @@ public class StapleController extends RestController implements HttpHandler, Tra
         String reqBody = params.getReqBody();
 
         if(reqBody.isEmpty()){
-            return new Response(400, "");
+            return new Response(400,"");
         }
+        SymptomType symptomType = (SymptomType) getEntityFromBody(reqBody, new SymptomTypeDto());
 
-        Staple staple = (Staple) getEntityFromBody(reqBody, new StapleDto());
-
-        StapleDao stapleDao = new StapleDao(this.connection);
+        SymptomTypeDao symptomTypeDao = new SymptomTypeDao(connection);
 
         try{
-            stapleDao.insert(staple);
-
+            symptomTypeDao.insert(symptomType);
             return new Response(200, "");
-
         } catch (SQLException e) {
             e.printStackTrace();
-
             return new Response(500, "");
         }
     }
 
-
     @Override
     protected Response put(ExchangeParams params) {
-        if(params.getArg().isEmpty()){
-            return new Response(400, "");
+        String arg = params.getArg();
+
+        if(arg.isEmpty()){
+            return new Response(204, "");
         }
 
         String reqBody = params.getReqBody();
 
         if(reqBody.isEmpty()){
-            return new Response(400, "");
+            return new Response(204, "");
         }
 
-        Staple stapleNewData = (Staple) this.getEntityFromBody(reqBody, new StapleDto());
+        SymptomType symptomTypeNewData = (SymptomType) this.getEntityFromBody(reqBody, new SymptomTypeDto());
 
         try{
-            StapleDao stapleDao = new StapleDao(this.connection);
+            SymptomTypeDao symptomTypeDao = new SymptomTypeDao(connection);
 
-            Staple stapleToUpdate = (Staple) fetchById(stapleDao, params.getArg());
+            SymptomType symptomTypeToUpdate = (SymptomType) fetchById(symptomTypeDao, arg);
 
-            if(stapleToUpdate != null){
-                stapleToUpdate.copyFrom(stapleNewData);
+            if(symptomTypeToUpdate != null){
+                symptomTypeToUpdate.copyFrom(symptomTypeNewData);
 
-                stapleDao.updateById(stapleToUpdate);
+                symptomTypeDao.updateById(symptomTypeToUpdate);
 
                 return new Response(200, "");
             }
             else{
                 return new Response(204, "");
             }
-
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -142,16 +121,17 @@ public class StapleController extends RestController implements HttpHandler, Tra
 
     @Override
     protected Response delete(ExchangeParams params) {
-        if(params.getArg().isEmpty()){
+        String arg = params.getArg();
+
+        if(arg.isEmpty()){
             return new Response(400, "");
         }
         else{
             try{
-                this.deleteById(new StapleDao(this.connection), params.getArg());
+                this.deleteById(new SymptomTypeDao(connection), arg);
                 return new Response(200, "");
             } catch (SQLException e) {
                 e.printStackTrace();
-
                 return new Response(500, "");
             }
         }

@@ -2,6 +2,7 @@ package borges.dimitrius.dao;
 
 import borges.dimitrius.factory.DbConnectionFactoryTest;
 import borges.dimitrius.model.entities.SymptomType;
+import borges.dimitrius.setup.SymptomTypeTest;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
@@ -11,34 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SymptomTypeDaoTest {
-
-    private final SymptomType defaultSymptomType = new SymptomType("DefaultDescription");
-
-    private SymptomTypeDao symptomTypeDao;
-
-    @BeforeEach
-    public void prepareDatabase(){
-        try {
-            Connection connection = DbConnectionFactoryTest.getConnection();
-
-            this.symptomTypeDao = new SymptomTypeDao(connection);
-
-            Statement stmt = connection.createStatement();
-
-            stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-
-            stmt.execute("TRUNCATE patient_symptom");
-            stmt.execute("TRUNCATE symptom_type");
-            stmt.execute("INSERT INTO symptom_type (description) values('DefaultDescription')");
-
-            stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
-
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-        }
-    }
+public class SymptomTypeDaoTest extends SymptomTypeTest {
 
     @Test
     public void insertNewSymptomType(){

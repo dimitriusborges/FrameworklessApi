@@ -49,8 +49,8 @@ class TreatmentDaoTest {
 
 
             stmt.execute("TRUNCATE rootfile");
-            stmt.execute("INSERT INTO rootfile (name_type, brand) values('NameType', 'Brand')");
-            stmt.execute("INSERT INTO rootfile (name_type, brand) values('NameType', 'Brand2')");
+            stmt.execute("INSERT INTO rootfile (type_name, brand) values('NameType', 'Brand')");
+            stmt.execute("INSERT INTO rootfile (type_name, brand) values('NameType', 'Brand2')");
 
             stmt.execute("TRUNCATE staple");
             stmt.execute("INSERT INTO staple (type) values('Type1A')");

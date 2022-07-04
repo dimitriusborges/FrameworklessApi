@@ -100,7 +100,7 @@ public class RootFileController extends RestController implements HttpHandler, T
     @Override
     protected Response put(ExchangeParams params) {
         if(params.getArg().isEmpty()){
-            return new Response(204, "");
+            return new Response(400, "");
         }
 
         String reqBody = params.getReqBody();

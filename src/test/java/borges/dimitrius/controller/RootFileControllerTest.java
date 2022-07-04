@@ -83,7 +83,7 @@ class RootFileControllerTest extends RootFileTest {
     @Test
     public void insertNewRootFile(){
         ExchangeParams exchangeParamsMock = new ExchangeParams(this.rootFileController.getEndpoint(),
-                this.rootFileController.getEndpoint(), "", "get",
+                this.rootFileController.getEndpoint(), "", "post",
                 "{\"nameType\": \"New RootFile\",\"brand\": \"New Brand\"}", null);
 
         RootFile expectedRootFile = new RootFile("New RootFile", "New Brand");
@@ -103,7 +103,7 @@ class RootFileControllerTest extends RootFileTest {
     @Test
     public void updateExistingRootFile(){
         ExchangeParams exchangeParamsMock = new ExchangeParams(this.rootFileController.getEndpoint(),
-                this.rootFileController.getEndpoint(), "1", "get",
+                this.rootFileController.getEndpoint(), "1", "put",
                 "{\"nameType\": \"New RootFile\",\"brand\": \"New Brand\"}", null);
 
         RootFile updatingRootFile = new RootFile(1L, "New RootFile", "New Brand");
@@ -122,7 +122,7 @@ class RootFileControllerTest extends RootFileTest {
     @Test
     public void deleteExistingRootRile(){
         ExchangeParams exchangeParamsMock = new ExchangeParams(this.rootFileController.getEndpoint(),
-                this.rootFileController.getEndpoint(), "2", "get",
+                this.rootFileController.getEndpoint(), "2", "delete",
                 "", null);
 
         Response response = this.rootFileController.delete(exchangeParamsMock);

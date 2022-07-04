@@ -1,8 +1,12 @@
 package borges.dimitrius.model.entities;
 
+import borges.dimitrius.model.dto.Dto;
+import borges.dimitrius.model.dto.SymptomTypeDto;
+import borges.dimitrius.model.dto.TransferableEntity;
+
 import java.util.Objects;
 
-public class SymptomType extends Entity {
+public class SymptomType extends TransferableEntity {
 
     private String description;
 
@@ -42,5 +46,22 @@ public class SymptomType extends Entity {
     @Override
     public int hashCode() {
         return Objects.hash(getDescription());
+    }
+
+    @Override
+    public Dto toDto() {
+        return new SymptomTypeDto(this.id.toString(), this.description);
+    }
+
+    @Override
+    public <T extends TransferableEntity> void copyFrom(T entityToCopy) {
+        SymptomType symptomTypeToCopy = (SymptomType)entityToCopy;
+
+        String description = symptomTypeToCopy.getDescription();
+
+        if(description != null){
+            this.description = description;
+        }
+
     }
 }

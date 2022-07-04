@@ -111,7 +111,7 @@ class PatientControllerTest extends PatientTest {
     @Test
     public void updateExistingPatient(){
         ExchangeParams exchangeParamsMock = new ExchangeParams(this.patientController.getEndpoint(),
-                this.patientController.getEndpoint(), "1", "post",
+                this.patientController.getEndpoint(), "1", "put",
                 "{\"name\": \"Updated Patient\",\"birthdate\": \"1972-03-03\"\n}", null);
 
         Patient updatingPatient = new Patient(1L, Date.valueOf("1972-03-03"), "Updated Patient");
@@ -134,7 +134,7 @@ class PatientControllerTest extends PatientTest {
     @Test
     public void deleteExistingPatient(){
         ExchangeParams exchangeParamsMock = new ExchangeParams(this.patientController.getEndpoint(),
-                this.patientController.getEndpoint(), "2", "post","", null);
+                this.patientController.getEndpoint(), "2", "delete","", null);
 
         Response response = this.patientController.delete(exchangeParamsMock);
         assertEquals(response.getCode(), 200);

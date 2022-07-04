@@ -110,7 +110,7 @@ public class PatientController extends RestController implements HttpHandler, Tr
     protected Response put(ExchangeParams params){
 
         if(params.getArg().isEmpty()){
-            return new Response(204, "");
+            return new Response(400, "");
         }
 
         String reqBody = params.getReqBody();
