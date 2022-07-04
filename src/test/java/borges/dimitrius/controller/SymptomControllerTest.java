@@ -1,10 +1,8 @@
 package borges.dimitrius.controller;
 
-import borges.dimitrius.dao.SymptomTypeDao;
-import borges.dimitrius.factory.DbConnectionFactoryTest;
-import borges.dimitrius.model.dto.SymptomTypeDto;
-import borges.dimitrius.model.entities.SymptomType;
-import borges.dimitrius.setup.SymptomTypeTest;
+import borges.dimitrius.model.dto.SymptomDto;
+import borges.dimitrius.model.entities.Symptom;
+import borges.dimitrius.setup.SymptomTest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,10 +15,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SymptomTypeControllerTest extends SymptomTypeTest {
+class SymptomControllerTest extends SymptomTest {
 
-    private final SymptomType defaultSymptomType2 = new SymptomType("Symptom2");
-    private SymptomTypeController symptomTypeController;
+    private final Symptom defaultSymptomType2 = new Symptom("Symptom2");
+    private SymptomController symptomTypeController;
 
     @Override
     @BeforeEach
@@ -30,11 +28,11 @@ class SymptomTypeControllerTest extends SymptomTypeTest {
         try {
 
             Statement stmt = connection.createStatement();
-            this.symptomTypeController = new SymptomTypeController(this.connection);
+            this.symptomTypeController = new SymptomController(this.connection);
 
             stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
 
-            stmt.execute("INSERT INTO symptom_type (description) values('Symptom2')");
+            stmt.execute("INSERT INTO symptom (description) values('Symptom2')");
 
             stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
 
@@ -55,7 +53,7 @@ class SymptomTypeControllerTest extends SymptomTypeTest {
 
         Gson gson = new Gson();
 
-        SymptomTypeDto symptomTypeReceived = gson.fromJson(response.getBody(), SymptomTypeDto.class);
+        SymptomDto symptomTypeReceived = gson.fromJson(response.getBody(), SymptomDto.class);
 
         assertEquals(symptomTypeReceived.toEntity(), defaultSymptomType);
 
@@ -70,9 +68,9 @@ class SymptomTypeControllerTest extends SymptomTypeTest {
         Response response = this.symptomTypeController.get(exchangeParamsMock);
         assertEquals(response.getCode(), 200);
 
-        Type symptomTypeDtoList = new TypeToken<List<SymptomTypeDto>>() {}.getType();
+        Type symptomTypeDtoList = new TypeToken<List<SymptomDto>>() {}.getType();
         Gson gson = new Gson();
-        List<SymptomTypeDto> receivedSyptomType = gson.fromJson(response.getBody(), symptomTypeDtoList);
+        List<SymptomDto> receivedSyptomType = gson.fromJson(response.getBody(), symptomTypeDtoList);
 
         if(receivedSyptomType.size() != 2){
             fail("Was expecting two symptoms registers, but " + receivedSyptomType.size() + " were found.");
@@ -89,13 +87,13 @@ class SymptomTypeControllerTest extends SymptomTypeTest {
                 this.symptomTypeController.getEndpoint(), "", "post",
                 "{\"description\": \"New Description\"}", null);
 
-        SymptomType expectedSyptomType = new SymptomType(3L, "New Description");
+        Symptom expectedSyptomType = new Symptom(3L, "New Description");
 
         Response response = symptomTypeController.post(exchangeParamsMock);
         assertEquals(response.getCode(), 200);
 
         try{
-            SymptomType symptomTypeInserted = this.symptomTypeDao.findById(3L);
+            Symptom symptomTypeInserted = this.symptomTypeDao.findById(3L);
             assertEquals(symptomTypeInserted, expectedSyptomType);
 
         } catch (SQLException e) {
@@ -109,13 +107,13 @@ class SymptomTypeControllerTest extends SymptomTypeTest {
                 this.symptomTypeController.getEndpoint(), "1", "put",
                 "{\"description\": \"New Description\"}", null);
 
-        SymptomType updatingSymptomType = new SymptomType(1L, "New Description");
+        Symptom updatingSymptomType = new Symptom(1L, "New Description");
 
         Response response = symptomTypeController.put(exchangeParamsMock);
         assertEquals(response.getCode(), 200);
 
         try{
-            SymptomType updatedSymptomType = this.symptomTypeDao.findById(1L);
+            Symptom updatedSymptomType = this.symptomTypeDao.findById(1L);
             assertEquals(updatedSymptomType, updatingSymptomType);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -131,7 +129,7 @@ class SymptomTypeControllerTest extends SymptomTypeTest {
         assertEquals(response.getCode(), 200);
 
         try {
-            SymptomType deletedSymptomType = this.symptomTypeDao.findById(2L);
+            Symptom deletedSymptomType = this.symptomTypeDao.findById(2L);
             assertNull(deletedSymptomType);
         } catch (SQLException e) {
             e.printStackTrace();

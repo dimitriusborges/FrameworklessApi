@@ -1,19 +1,19 @@
 package borges.dimitrius.setup;
 
-import borges.dimitrius.dao.SymptomTypeDao;
+import borges.dimitrius.dao.SymptomDao;
 import borges.dimitrius.factory.DbConnectionFactoryTest;
-import borges.dimitrius.model.entities.SymptomType;
+import borges.dimitrius.model.entities.Symptom;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SymptomTypeTest {
+public class SymptomTest {
 
-    protected final SymptomType defaultSymptomType = new SymptomType("DefaultDescription");
+    protected final Symptom defaultSymptomType = new Symptom("DefaultDescription");
 
-    protected SymptomTypeDao symptomTypeDao;
+    protected SymptomDao symptomTypeDao;
 
     protected Connection connection;
 
@@ -22,15 +22,15 @@ public class SymptomTypeTest {
         try {
             connection = DbConnectionFactoryTest.getConnection();
 
-            this.symptomTypeDao = new SymptomTypeDao(connection);
+            this.symptomTypeDao = new SymptomDao(connection);
 
             Statement stmt = connection.createStatement();
 
             stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
 
             stmt.execute("TRUNCATE patient_symptom");
-            stmt.execute("TRUNCATE symptom_type");
-            stmt.execute("INSERT INTO symptom_type (description) values('DefaultDescription')");
+            stmt.execute("TRUNCATE symptom");
+            stmt.execute("INSERT INTO symptom (description) values('DefaultDescription')");
 
             stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
 

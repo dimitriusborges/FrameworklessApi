@@ -1,7 +1,6 @@
-package borges.dimitrius.model.dto;
+package borges.dimitrius.model.entities;
 
-import borges.dimitrius.model.entities.Entity;
-import borges.dimitrius.model.entities.Patient;
+import borges.dimitrius.model.dto.Dto;
 
 public abstract class TransferableEntity extends Entity {
 

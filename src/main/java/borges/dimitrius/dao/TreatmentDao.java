@@ -43,7 +43,7 @@ public class TreatmentDao extends Dao {
         super(connection, "treatment");
     }
 
-    public TreatmentVo transformIntoDto(Treatment treatment) throws SQLException{
+    public TreatmentVo transformIntoVo(Treatment treatment) throws SQLException{
 
         PatientDao patientDao = new PatientDao(this.dbConn);
         Patient patient = patientDao.findById(treatment.getPatientId());

@@ -1,7 +1,6 @@
 package borges.dimitrius.model.entities;
 
 import borges.dimitrius.model.dto.PatientDto;
-import borges.dimitrius.model.dto.TransferableEntity;
 
 import java.sql.Date;
 import java.util.Objects;

@@ -4,7 +4,7 @@ import borges.dimitrius.factory.DbConnectionFactoryTest;
 import borges.dimitrius.model.entities.Patient;
 import borges.dimitrius.model.entities.PatientSymptom;
 import borges.dimitrius.model.vo.PatientSymptomVo;
-import borges.dimitrius.model.entities.SymptomType;
+import borges.dimitrius.model.entities.Symptom;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
@@ -21,11 +21,11 @@ class PatientSymptomDaoTest {
             Date.valueOf("1970-01-1"),
             1L);
     private final Patient defaultPatient = new Patient(Date.valueOf("1970-01-1"), "Default");
-    private final SymptomType defaultSymptomType = new SymptomType("DefaultDescription");
+    private final Symptom defaultSymptomType = new Symptom("DefaultDescription");
 
     private PatientSymptomDao patientSymptomDao;
     private PatientDao patientDao;
-    private SymptomTypeDao symptomTypeDao;
+    private SymptomDao symptomTypeDao;
 
 
 
@@ -36,7 +36,7 @@ class PatientSymptomDaoTest {
             Connection connection = DbConnectionFactoryTest.getConnection();
             this.patientSymptomDao = new PatientSymptomDao(connection);
             this.patientDao = new PatientDao(connection);
-            this.symptomTypeDao = new SymptomTypeDao(connection);
+            this.symptomTypeDao = new SymptomDao(connection);
 
             Statement stmt = connection.createStatement();
 
@@ -46,9 +46,9 @@ class PatientSymptomDaoTest {
             stmt.execute("INSERT INTO patient (birthdate, name) values('1970-01-01', 'Default')");
             stmt.execute("INSERT INTO patient (birthdate, name) values('1970-01-01', 'DefaultTwo')");
 
-            stmt.execute("TRUNCATE symptom_type");
-            stmt.execute("INSERT INTO symptom_type (description) values('DefaultDescription')");
-            stmt.execute("INSERT INTO symptom_type (description) values('AnotherDescription')");
+            stmt.execute("TRUNCATE symptom");
+            stmt.execute("INSERT INTO symptom (description) values('DefaultDescription')");
+            stmt.execute("INSERT INTO symptom (description) values('AnotherDescription')");
 
             stmt.execute("TRUNCATE patient_symptom");
             stmt.execute("INSERT INTO patient_symptom (symptom_type, report_date, patient_id) values(1, '1970-01-1', 1)");
@@ -76,11 +76,11 @@ class PatientSymptomDaoTest {
 
             assertEquals(newPatientSymptom, patientSymptomFromDb);
 
-            PatientSymptomVo patientSymptomDto = patientSymptomDao.transformIntoDto(patientSymptomFromDb);
+            PatientSymptomVo patientSymptomVo = patientSymptomDao.transformIntoVo(patientSymptomFromDb);
 
-            assertEquals(patientSymptomDto.getPatientSymptom(), patientSymptomFromDb);
-            assertEquals(patientSymptomDto.getPatient(), patientDao.findById(1L));
-            assertEquals(patientSymptomDto.getSymptomType(), symptomTypeDao.findById(1L));
+            assertEquals(patientSymptomVo.getPatientSymptom(), patientSymptomFromDb);
+            assertEquals(patientSymptomVo.getPatient(), patientDao.findById(1L));
+            assertEquals(patientSymptomVo.getSymptomType(), symptomTypeDao.findById(1L));
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -94,10 +94,10 @@ class PatientSymptomDaoTest {
 
             assertEquals(patientSymptomFromDb, defaultPatientSymptom);
 
-            PatientSymptomVo patientSymptomDto = patientSymptomDao.transformIntoDto(patientSymptomFromDb);
-            assertEquals(patientSymptomDto.getPatientSymptom(), patientSymptomFromDb);
-            assertEquals(patientSymptomDto.getPatient(), patientDao.findById(1L));
-            assertEquals(patientSymptomDto.getSymptomType(), symptomTypeDao.findById(1L));
+            PatientSymptomVo patientSymptomVo = patientSymptomDao.transformIntoVo(patientSymptomFromDb);
+            assertEquals(patientSymptomVo.getPatientSymptom(), patientSymptomFromDb);
+            assertEquals(patientSymptomVo.getPatient(), patientDao.findById(1L));
+            assertEquals(patientSymptomVo.getSymptomType(), symptomTypeDao.findById(1L));
 
 
         }catch (SQLException e){
@@ -120,11 +120,11 @@ class PatientSymptomDaoTest {
             assertEquals(patientSymptomToUpdate, updatedPatientSymptomFromDb);
             assertNotEquals(patientSymptomFromDb, updatedPatientSymptomFromDb);
 
-            PatientSymptomVo patientSymptomDto = patientSymptomDao.transformIntoDto(updatedPatientSymptomFromDb);
+            PatientSymptomVo patientSymptomVo = patientSymptomDao.transformIntoVo(updatedPatientSymptomFromDb);
 
-            assertEquals(patientSymptomDto.getPatientSymptom(), updatedPatientSymptomFromDb);
-            assertEquals(patientSymptomDto.getPatient(), patientDao.findById(2L));
-            assertEquals(patientSymptomDto.getSymptomType(), symptomTypeDao.findById(2L));
+            assertEquals(patientSymptomVo.getPatientSymptom(), updatedPatientSymptomFromDb);
+            assertEquals(patientSymptomVo.getPatient(), patientDao.findById(2L));
+            assertEquals(patientSymptomVo.getSymptomType(), symptomTypeDao.findById(2L));
 
 
 

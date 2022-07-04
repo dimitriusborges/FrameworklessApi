@@ -86,7 +86,7 @@ class TreatmentDaoTest {
 
             assertEquals(treatmentFromDb, newTreatment);
 
-            TreatmentVo treatmentDto = treatmentDao.transformIntoDto(treatmentFromDb);
+            TreatmentVo treatmentDto = treatmentDao.transformIntoVo(treatmentFromDb);
 
             assertEquals(treatmentDto.getTreatment(), treatmentFromDb);
             assertEquals(treatmentDto.getPatient(), patientDao.findById(1L));
@@ -106,7 +106,7 @@ class TreatmentDaoTest {
 
             assertEquals(treatmentFromDb, defaultTreatment);
 
-            TreatmentVo treatmentDto = treatmentDao.transformIntoDto(treatmentFromDb);
+            TreatmentVo treatmentDto = treatmentDao.transformIntoVo(treatmentFromDb);
             assertEquals(treatmentDto.getTreatment(), treatmentFromDb);
             assertEquals(treatmentDto.getPatient(), patientDao.findById(1L));
             assertEquals(treatmentDto.getRootFile(), rootFileDao.findById(1L));
@@ -132,7 +132,7 @@ class TreatmentDaoTest {
             assertEquals(updatedTreatmentFromDb, treatmentToUpDate);
             assertNotEquals(updatedTreatmentFromDb, treatmentFromDb);
 
-            TreatmentVo treatmentDto = treatmentDao.transformIntoDto(updatedTreatmentFromDb);
+            TreatmentVo treatmentDto = treatmentDao.transformIntoVo(updatedTreatmentFromDb);
 
             assertEquals(treatmentDto.getTreatment(), updatedTreatmentFromDb);
             assertEquals(treatmentDto.getPatient(), patientDao.findById(2L));

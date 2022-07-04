@@ -2,7 +2,6 @@ package borges.dimitrius.model.entities;
 
 import borges.dimitrius.model.dto.Dto;
 import borges.dimitrius.model.dto.StapleDto;
-import borges.dimitrius.model.dto.TransferableEntity;
 
 import java.util.Objects;
 

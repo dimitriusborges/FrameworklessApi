@@ -1,6 +1,5 @@
 package borges.dimitrius.controller;
 
-import borges.dimitrius.factory.DbConnectionFactoryTest;
 import borges.dimitrius.model.dto.PatientDto;
 import borges.dimitrius.model.entities.Patient;
 import borges.dimitrius.setup.PatientTest;

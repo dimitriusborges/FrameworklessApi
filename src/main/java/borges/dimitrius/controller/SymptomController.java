@@ -1,8 +1,8 @@
 package borges.dimitrius.controller;
 
-import borges.dimitrius.dao.SymptomTypeDao;
-import borges.dimitrius.model.dto.SymptomTypeDto;
-import borges.dimitrius.model.entities.SymptomType;
+import borges.dimitrius.dao.SymptomDao;
+import borges.dimitrius.model.dto.SymptomDto;
+import borges.dimitrius.model.entities.Symptom;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -11,17 +11,17 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class SymptomTypeController extends RestController implements HttpHandler, TransferableEntityHandler {
+public class SymptomController extends RestController implements HttpHandler, TransferableEntityHandler {
 
     private final Connection connection;
 
-    public SymptomTypeController(Connection connection) {
+    public SymptomController(Connection connection) {
         this.connection = connection;
     }
 
     @Override
     public String getEndpoint() {
-        return RestController.MAIN_ADDRESS + "symptomtypes";
+        return RestController.MAIN_ADDRESS + "symptoms";
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SymptomTypeController extends RestController implements HttpHandler
     @Override
     protected Response get(ExchangeParams params) {
         try{
-            SymptomTypeDao symptomTypeDao = new SymptomTypeDao(this.connection);
+            SymptomDao symptomTypeDao = new SymptomDao(this.connection);
             Response response;
             String args = params.getArg();
 
@@ -67,9 +67,9 @@ public class SymptomTypeController extends RestController implements HttpHandler
         if(reqBody.isEmpty()){
             return new Response(400,"");
         }
-        SymptomType symptomType = (SymptomType) getEntityFromBody(reqBody, new SymptomTypeDto());
+        Symptom symptomType = (Symptom) getEntityFromBody(reqBody, new SymptomDto());
 
-        SymptomTypeDao symptomTypeDao = new SymptomTypeDao(connection);
+        SymptomDao symptomTypeDao = new SymptomDao(connection);
 
         try{
             symptomTypeDao.insert(symptomType);
@@ -94,12 +94,12 @@ public class SymptomTypeController extends RestController implements HttpHandler
             return new Response(204, "");
         }
 
-        SymptomType symptomTypeNewData = (SymptomType) this.getEntityFromBody(reqBody, new SymptomTypeDto());
+        Symptom symptomTypeNewData = (Symptom) this.getEntityFromBody(reqBody, new SymptomDto());
 
         try{
-            SymptomTypeDao symptomTypeDao = new SymptomTypeDao(connection);
+            SymptomDao symptomTypeDao = new SymptomDao(connection);
 
-            SymptomType symptomTypeToUpdate = (SymptomType) fetchById(symptomTypeDao, arg);
+            Symptom symptomTypeToUpdate = (Symptom) fetchById(symptomTypeDao, arg);
 
             if(symptomTypeToUpdate != null){
                 symptomTypeToUpdate.copyFrom(symptomTypeNewData);
@@ -128,7 +128,7 @@ public class SymptomTypeController extends RestController implements HttpHandler
         }
         else{
             try{
-                this.deleteById(new SymptomTypeDao(connection), arg);
+                this.deleteById(new SymptomDao(connection), arg);
                 return new Response(200, "");
             } catch (SQLException e) {
                 e.printStackTrace();

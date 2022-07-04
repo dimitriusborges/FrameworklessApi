@@ -1,7 +1,7 @@
 package borges.dimitrius.dao;
 
 import borges.dimitrius.model.entities.Entity;
-import borges.dimitrius.model.entities.SymptomType;
+import borges.dimitrius.model.entities.Symptom;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SymptomTypeDao extends Dao{
+public class SymptomDao extends Dao{
 
     private enum SymptomTypeCols {
         ID("id"),
@@ -29,16 +29,16 @@ public class SymptomTypeDao extends Dao{
         }
     }
 
-    public SymptomTypeDao(Connection connection){
-        super(connection, "symptom_type");
+    public SymptomDao(Connection connection){
+        super(connection, "symptom");
     }
 
     @Override
-    protected List<SymptomType> loadFromResultSet(ResultSet resultSet) throws SQLException {
-        List<SymptomType> symptomTypesList = new ArrayList<>();
+    protected List<Symptom> loadFromResultSet(ResultSet resultSet) throws SQLException {
+        List<Symptom> symptomTypesList = new ArrayList<>();
 
         while(resultSet.next()){
-            symptomTypesList.add( new SymptomType(
+            symptomTypesList.add( new Symptom(
                resultSet.getLong(1),
                resultSet.getString(2)
             ));
@@ -48,19 +48,19 @@ public class SymptomTypeDao extends Dao{
     }
 
     @Override
-    public List<SymptomType> findAll() throws SQLException {
+    public List<Symptom> findAll() throws SQLException {
         return loadFromResultSet(super.fetchAll());
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public SymptomType findById(Long id) throws SQLException {
-        return (SymptomType) this.fetchById(id);
+    public Symptom findById(Long id) throws SQLException {
+        return (Symptom) this.fetchById(id);
     }
 
     @Override
     public Map<String, Object> buildValMapping(Entity entity) {
-        SymptomType symptomType = (SymptomType) entity;
+        Symptom symptomType = (Symptom) entity;
 
         Map<String, Object> valMapping = new HashMap<>();
 

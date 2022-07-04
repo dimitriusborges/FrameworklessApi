@@ -4,7 +4,6 @@ package borges.dimitrius.model.dto;
 import borges.dimitrius.model.entities.Patient;
 
 import java.sql.Date;
-import java.text.ParseException;
 
 public class PatientDto implements Dto{
 

@@ -2,7 +2,7 @@ package borges.dimitrius.controller;
 
 import borges.dimitrius.dao.Dao;
 import borges.dimitrius.model.dto.Dto;
-import borges.dimitrius.model.dto.TransferableEntity;
+import borges.dimitrius.model.entities.TransferableEntity;
 import com.google.gson.Gson;
 
 import java.sql.SQLException;

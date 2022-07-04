@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PatientSymptomDao extends Dao{
+public class PatientSymptomDao extends MultiEntityDao{
 
     private enum PatientSymptomCols{
         ID("id"),
@@ -35,15 +35,17 @@ public class PatientSymptomDao extends Dao{
         super(connection, "patient_symptom");
     }
 
-    public PatientSymptomVo transformIntoDto(PatientSymptom patientSymptom) throws SQLException {
+    @Override
+    public PatientSymptomVo transformIntoVo(Entity entity) throws SQLException {
+        PatientSymptom patientSymptom = (PatientSymptom) entity;
+
         PatientDao patientDao = new PatientDao(this.dbConn);
         Patient patient = patientDao.findById(patientSymptom.getPatientId());
 
-        SymptomTypeDao symptomTypeDao = new SymptomTypeDao(this.dbConn);
-        SymptomType symptomType = symptomTypeDao.findById(patientSymptom.getSymptomId());
+        SymptomDao symptomTypeDao = new SymptomDao(this.dbConn);
+        Symptom symptomType = symptomTypeDao.findById(patientSymptom.getSymptomId());
 
         return new PatientSymptomVo(patientSymptom, symptomType, patient);
-
     }
 
     @Override

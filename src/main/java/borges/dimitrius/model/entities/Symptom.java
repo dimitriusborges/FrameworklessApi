@@ -1,20 +1,18 @@
 package borges.dimitrius.model.entities;
 
-import borges.dimitrius.model.dto.Dto;
-import borges.dimitrius.model.dto.SymptomTypeDto;
-import borges.dimitrius.model.dto.TransferableEntity;
+import borges.dimitrius.model.dto.SymptomDto;
 
 import java.util.Objects;
 
-public class SymptomType extends TransferableEntity {
+public class Symptom extends TransferableEntity {
 
     private String description;
 
-    public SymptomType(String description){
+    public Symptom(String description){
         this.description = description;
     }
 
-    public SymptomType(Long id, String description) {
+    public Symptom(Long id, String description) {
         this.id = id;
         this.description = description;
     }
@@ -39,7 +37,7 @@ public class SymptomType extends TransferableEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SymptomType that = (SymptomType) o;
+        Symptom that = (Symptom) o;
         return getDescription().equals(that.getDescription());
     }
 
@@ -49,13 +47,13 @@ public class SymptomType extends TransferableEntity {
     }
 
     @Override
-    public Dto toDto() {
-        return new SymptomTypeDto(this.id.toString(), this.description);
+    public SymptomDto toDto() {
+        return new SymptomDto(this.id.toString(), this.description);
     }
 
     @Override
     public <T extends TransferableEntity> void copyFrom(T entityToCopy) {
-        SymptomType symptomTypeToCopy = (SymptomType)entityToCopy;
+        Symptom symptomTypeToCopy = (Symptom)entityToCopy;
 
         String description = symptomTypeToCopy.getDescription();
 

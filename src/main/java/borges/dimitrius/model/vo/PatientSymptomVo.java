@@ -1,32 +1,33 @@
 package borges.dimitrius.model.vo;
 
 
+import borges.dimitrius.model.dto.PatientSymptomDto;
 import borges.dimitrius.model.entities.Patient;
 import borges.dimitrius.model.entities.PatientSymptom;
-import borges.dimitrius.model.entities.SymptomType;
+import borges.dimitrius.model.entities.Symptom;
 
-public class PatientSymptomVo {
+public class PatientSymptomVo implements Vo{
 
-    private final PatientSymptom patientSymptomDecorated;
-    private SymptomType symptomType;
+    private final PatientSymptom patientSymptom;
+    private Symptom symptomType;
     private Patient patient;
 
-    public PatientSymptomVo(PatientSymptom patientSymptom, SymptomType symptomType, Patient patient){
-        this.patientSymptomDecorated = patientSymptom;
+    public PatientSymptomVo(PatientSymptom patientSymptom, Symptom symptomType, Patient patient){
+        this.patientSymptom = patientSymptom;
         this.symptomType = symptomType;
         this.patient = patient;
 
     }
 
     public PatientSymptom getPatientSymptom() {
-        return patientSymptomDecorated;
+        return patientSymptom;
     }
 
-    public SymptomType getSymptomType() {
+    public Symptom getSymptomType() {
         return symptomType;
     }
 
-    public void setSymptomType(SymptomType symptomType) {
+    public void setSymptomType(Symptom symptomType) {
         this.symptomType = symptomType;
     }
 
@@ -36,5 +37,12 @@ public class PatientSymptomVo {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+
+    @Override
+    public PatientSymptomDto toDto() {
+        return new PatientSymptomDto(patientSymptom.getId().toString(),
+                patientSymptom.getReportDate().toString(),
+                patient.toDto(), symptomType.toDto());
     }
 }
