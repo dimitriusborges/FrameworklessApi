@@ -20,12 +20,14 @@ public class FrameworklessApi {
             StapleController stapleController = new StapleController(DbConnectionFactory.getConnection());
             SymptomController symptomTypeController = new SymptomController(DbConnectionFactory.getConnection());
             PatientSymptomController patientSymptomController = new PatientSymptomController(DbConnectionFactory.getConnection());
+            TreatmentController treatmentController = new TreatmentController(DbConnectionFactory.getConnection());
 
             server.createContext(patientController.getEndpoint(), patientController);
             server.createContext(rootFileController.getEndpoint(), rootFileController);
             server.createContext(stapleController.getEndpoint(), stapleController);
             server.createContext(symptomTypeController.getEndpoint(), symptomTypeController);
             server.createContext(patientSymptomController.getEndpoint(), patientSymptomController);
+            server.createContext(treatmentController.getEndpoint(), treatmentController);
 
             server.setExecutor(null);
             server.start();

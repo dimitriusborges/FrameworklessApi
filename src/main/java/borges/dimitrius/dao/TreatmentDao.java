@@ -11,7 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TreatmentDao extends Dao {
+public class TreatmentDao extends MultiEntityDao {
+
+
 
     private enum TreatmentCols {
         ID("id"),
@@ -41,21 +43,6 @@ public class TreatmentDao extends Dao {
 
     public TreatmentDao(Connection connection){
         super(connection, "treatment");
-    }
-
-    public TreatmentVo transformIntoVo(Treatment treatment) throws SQLException{
-
-        PatientDao patientDao = new PatientDao(this.dbConn);
-        Patient patient = patientDao.findById(treatment.getPatientId());
-
-        RootFileDao rootFileDao = new RootFileDao(this.dbConn);
-        RootFile rootFile = rootFileDao.findById(treatment.getFileId());
-
-        StapleDao stapleDao = new StapleDao(this.dbConn);
-        Staple staple = stapleDao.findById(treatment.getStapleId());
-
-        return new TreatmentVo(treatment, patient, rootFile, staple);
-
     }
 
     @Override
@@ -107,10 +94,27 @@ public class TreatmentDao extends Dao {
         valMapping.put(TreatmentCols.CANAL3.colName, treatment.getCanal3());
         valMapping.put(TreatmentCols.CANAL4.colName, treatment.getCanal4());
         valMapping.put(TreatmentCols.CANAL5.colName, treatment.getCanal5());
-        valMapping.put(TreatmentCols.FILE_ID.colName, treatment.getFileId());
+        valMapping.put(TreatmentCols.FILE_ID.colName, treatment.getRootFileId());
         valMapping.put(TreatmentCols.STAPLE_ID.colName, treatment.getStapleId());
         valMapping.put(TreatmentCols.OBSERVATION.colName, treatment.getObservation());
 
         return valMapping;
+    }
+
+    @Override
+    public TreatmentVo transformIntoVo(Entity entity) throws SQLException {
+        Treatment treatment = (Treatment) entity;
+
+        PatientDao patientDao = new PatientDao(this.dbConn);
+        Patient patient = patientDao.findById(treatment.getPatientId());
+
+        RootFileDao rootFileDao = new RootFileDao(this.dbConn);
+        RootFile rootFile = rootFileDao.findById(treatment.getRootFileId());
+
+        StapleDao stapleDao = new StapleDao(this.dbConn);
+        Staple staple = stapleDao.findById(treatment.getStapleId());
+
+        return new TreatmentVo(treatment, patient, rootFile, staple);
+
     }
 }

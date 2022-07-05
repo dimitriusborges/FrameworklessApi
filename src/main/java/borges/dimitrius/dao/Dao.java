@@ -58,6 +58,9 @@ public abstract class Dao {
 
         int idx = 0;
         for(Object val: valMap.values()){
+            if(val == null) {
+                continue;
+            }
             String valType = val.getClass().getName();
 
             switch (valType) {

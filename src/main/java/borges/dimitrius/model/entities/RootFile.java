@@ -60,7 +60,7 @@ public class RootFile extends TransferableEntity {
     }
 
     @Override
-    public Dto toDto() {
+    public RootFileDto toDto() {
         return new RootFileDto(this.id.toString(), this.typeName, this.brand);
     }
 

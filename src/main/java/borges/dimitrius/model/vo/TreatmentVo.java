@@ -1,11 +1,13 @@
 package borges.dimitrius.model.vo;
 
+import borges.dimitrius.model.dto.Dto;
+import borges.dimitrius.model.dto.TreatmentDto;
 import borges.dimitrius.model.entities.Patient;
 import borges.dimitrius.model.entities.Treatment;
 import borges.dimitrius.model.entities.RootFile;
 import borges.dimitrius.model.entities.Staple;
 
-public class TreatmentVo {
+public class TreatmentVo implements Vo{
 
     private final Treatment treatment;
     private Patient patient;
@@ -46,5 +48,16 @@ public class TreatmentVo {
 
     public void setStaple(Staple staple) {
         this.staple = staple;
+    }
+
+    //FIXME it doesn't look nice
+    @Override
+    public TreatmentDto toDto() {
+        return new TreatmentDto(treatment.getId().toString(),
+                treatment.getProcedureDate().toString(),
+                patient.toDto(),
+                String.valueOf(treatment.getTooth()),
+                String.valueOf(treatment.getCanal1()),String.valueOf(treatment.getCanal2()),String.valueOf(treatment.getCanal3()),String.valueOf(treatment.getCanal4()),String.valueOf(treatment.getCanal5()),
+                rootFile.toDto(), staple.toDto(), treatment.getObservation());
     }
 }

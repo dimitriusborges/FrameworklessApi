@@ -18,8 +18,8 @@ import java.util.List;
 
 class TreatmentDaoTest {
 
-    private final Treatment defaultTreatment = new Treatment(Date.valueOf("1970-01-1"),
-            1L, 10, 1L, 1L, "No canal measure");
+    private final Treatment defaultTreatment = new Treatment(1L, Date.valueOf("1970-01-1"),
+            1L, 10, 0, 0, 0, 0, 0, 1L, 1L, "No canal measure");
     private final Patient defaultPatient = new Patient(Date.valueOf("1970-01-1"), "Default");
     private final RootFile defaultRootFile = new RootFile("NameType", "Brand");
     private final Staple defaultStaple = new Staple("Type1A");
@@ -71,7 +71,7 @@ class TreatmentDaoTest {
 
     @Test
     public void insertNewTreatment(){
-        Treatment newTreatment = new Treatment(Date.valueOf("1970-01-1"), 1L, 15, 1L, 1L, "Observation");
+        Treatment newTreatment = new Treatment(1L, Date.valueOf("1970-01-1"), 1L, 15, 0, 0, 0, 0, 0, 1L, 1L, "Observation");
 
         try{
             treatmentDao.insert(newTreatment);
@@ -122,8 +122,7 @@ class TreatmentDaoTest {
         try {
             Treatment treatmentFromDb = treatmentDao.findById(1L);
 
-            Treatment treatmentToUpDate = new Treatment(treatmentFromDb.getFileId(),
-                    Date.valueOf("1970-01-31"), 2L, 15, 2L, 2L, "Default");
+            Treatment treatmentToUpDate = new Treatment(1L, Date.valueOf("1970-01-1"), 2L, 15, 0, 0, 0, 0, 0, 2L, 2L, "Default");
 
             treatmentDao.updateById(treatmentToUpDate);
 

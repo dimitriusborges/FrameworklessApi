@@ -48,7 +48,7 @@ public class Staple extends TransferableEntity {
     }
 
     @Override
-    public Dto toDto() {
+    public StapleDto toDto() {
         return new StapleDto(this.id.toString(), this.type);
     }
 
