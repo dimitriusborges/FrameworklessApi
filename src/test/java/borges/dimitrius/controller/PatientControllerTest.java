@@ -94,7 +94,7 @@ class PatientControllerTest extends PatientTest {
         Patient expectedPatient = new Patient(3L, Date.valueOf("1972-03-03"), "New Patient");
 
         Response response = patientController.post(exchangeParamsMock);
-        assertEquals(response.getCode(), 200);
+        assertEquals(response.getCode(), 201);
 
         try {
             Patient patientInserted = this.patientDao.findById(3L);

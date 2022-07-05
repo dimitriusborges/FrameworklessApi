@@ -96,7 +96,7 @@ public class PatientController extends RestController implements HttpHandler, Tr
         try {
             patientDao.insert(patient);
 
-            return new Response(200, "");
+            return new Response(201, "");
 
         } catch (SQLException e) {
             e.printStackTrace();

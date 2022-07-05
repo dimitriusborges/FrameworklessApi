@@ -8,4 +8,5 @@ public abstract class Entity {
         return id;
     }
 
+    public abstract <T extends  Entity> void copyFrom(T entityToCopy);
 }

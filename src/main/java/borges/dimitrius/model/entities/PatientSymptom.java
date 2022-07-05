@@ -69,4 +69,29 @@ public class PatientSymptom extends Entity{
     public int hashCode() {
         return Objects.hash(getSymptomId(), getReportDate(), getPatientId());
     }
+
+    @Override
+    public <T extends Entity> void copyFrom(T entityToCopy) {
+
+        PatientSymptom patientSymptomToCopy = (PatientSymptom) entityToCopy;
+
+        Long symptomId = patientSymptomToCopy.getSymptomId();
+
+        if(symptomId != null){
+            this.symptomId = symptomId;
+        }
+
+        Date reportDate = patientSymptomToCopy.getReportDate();
+
+        if (reportDate != null){
+            this.reportDate = reportDate;
+        }
+
+
+        Long patientId = patientSymptomToCopy.getPatientId();
+
+        if(patientId != null){
+            this.patientId = patientId;
+        }
+    }
 }

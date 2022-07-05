@@ -53,7 +53,7 @@ public class Staple extends TransferableEntity {
     }
 
     @Override
-    public <T extends TransferableEntity> void copyFrom(T entityToCopy) {
+    public <T extends Entity> void copyFrom(T entityToCopy) {
         Staple stapleToCopy = (Staple) entityToCopy;
 
         String type = stapleToCopy.getType();

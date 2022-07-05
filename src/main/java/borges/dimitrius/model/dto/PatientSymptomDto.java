@@ -11,6 +11,9 @@ public class PatientSymptomDto implements Dto{
     private PatientDto patient;
     private SymptomDto symptom;
 
+    public PatientSymptomDto() {
+    }
+
     public PatientSymptomDto(String id, String reportDate, PatientDto patientDto, SymptomDto symptomTypeDto) {
         this.id = id;
         this.reportDate = reportDate;

@@ -5,6 +5,7 @@ import borges.dimitrius.model.entities.Patient;
 import borges.dimitrius.model.entities.PatientSymptom;
 import borges.dimitrius.model.vo.PatientSymptomVo;
 import borges.dimitrius.model.entities.Symptom;
+import borges.dimitrius.setup.PatientSymptomTest;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
@@ -15,50 +16,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PatientSymptomDaoTest {
-
-    private final PatientSymptom defaultPatientSymptom = new PatientSymptom(1L,
-            Date.valueOf("1970-01-1"),
-            1L);
-    private final Patient defaultPatient = new Patient(Date.valueOf("1970-01-1"), "Default");
-    private final Symptom defaultSymptomType = new Symptom("DefaultDescription");
-
-    private PatientSymptomDao patientSymptomDao;
-    private PatientDao patientDao;
-    private SymptomDao symptomTypeDao;
-
-
-
-    @BeforeEach
-    public void prepareDatabase(){
-
-        try{
-            Connection connection = DbConnectionFactoryTest.getConnection();
-            this.patientSymptomDao = new PatientSymptomDao(connection);
-            this.patientDao = new PatientDao(connection);
-            this.symptomTypeDao = new SymptomDao(connection);
-
-            Statement stmt = connection.createStatement();
-
-            stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-
-            stmt.execute("TRUNCATE patient");
-            stmt.execute("INSERT INTO patient (birthdate, name) values('1970-01-01', 'Default')");
-            stmt.execute("INSERT INTO patient (birthdate, name) values('1970-01-01', 'DefaultTwo')");
-
-            stmt.execute("TRUNCATE symptom");
-            stmt.execute("INSERT INTO symptom (description) values('DefaultDescription')");
-            stmt.execute("INSERT INTO symptom (description) values('AnotherDescription')");
-
-            stmt.execute("TRUNCATE patient_symptom");
-            stmt.execute("INSERT INTO patient_symptom (symptom_type, report_date, patient_id) values(1, '1970-01-1', 1)");
-
-            stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
+class PatientSymptomDaoTest extends PatientSymptomTest {
 
     @Test
     public void insertNewPatientSymptom(){

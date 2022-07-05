@@ -2,6 +2,7 @@ package borges.dimitrius.controller;
 
 import borges.dimitrius.dao.Dao;
 import borges.dimitrius.model.dto.Dto;
+import borges.dimitrius.model.entities.Entity;
 import borges.dimitrius.model.entities.TransferableEntity;
 import com.google.gson.Gson;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public interface TransferableEntityHandler {
 
 
-    default List<String> fetchAllToTransfer(Dao entityDao) throws SQLException {
+    default <D extends Dao> List<String> fetchAllToTransfer(D entityDao) throws SQLException {
 
         Gson gson = new Gson();
 
@@ -29,7 +30,7 @@ public interface TransferableEntityHandler {
     default String fetchByIdToTransfer(Dao entityDao, String id) throws SQLException {
         Gson gson = new Gson();
 
-        TransferableEntity entity = fetchById(entityDao, id);
+        TransferableEntity entity = (TransferableEntity) fetchById(entityDao, id);
 
         if(entity == null){
             return "";
@@ -39,7 +40,7 @@ public interface TransferableEntityHandler {
         }
     }
 
-    default TransferableEntity fetchById(Dao entityDao, String id) throws SQLException {
+    default Entity fetchById(Dao entityDao, String id) throws SQLException {
         return entityDao.findById(Long.parseLong(id));
     }
 
@@ -47,7 +48,7 @@ public interface TransferableEntityHandler {
         entityDao.deleteById(Long.parseLong(id));
     }
 
-    default TransferableEntity getEntityFromBody(String reqBody, Dto dtoTransformer){
+    default Entity getEntityFromBody(String reqBody, Dto dtoTransformer){
         Gson gson = new Gson();
 
         dtoTransformer = gson.fromJson(reqBody, dtoTransformer.getClass());

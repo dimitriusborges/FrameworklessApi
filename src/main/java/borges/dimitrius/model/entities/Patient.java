@@ -22,7 +22,7 @@ public class Patient extends TransferableEntity {
     }
 
     @Override
-    public <T extends TransferableEntity> void copyFrom(T entityToCopy){
+    public <T extends Entity> void copyFrom(T entityToCopy){
 
         Patient patientToCopy = (Patient) entityToCopy;
 

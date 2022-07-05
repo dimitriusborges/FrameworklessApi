@@ -176,4 +176,9 @@ public class Treatment extends Entity{
     public int hashCode() {
         return Objects.hash(getProcedureDate(), getPatientId(), getTooth(), getCanal1(), getCanal2(), getCanal3(), getCanal4(), getCanal5(), getFileId(), getStapleId(), getObservation());
     }
+
+    @Override
+    public <T extends Entity> void copyFrom(T entityToCopy) {
+
+    }
 }
