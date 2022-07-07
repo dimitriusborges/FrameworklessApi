@@ -30,7 +30,6 @@ class PatientSymptomControllerTest extends PatientSymptomTest {
         super.prepareDatabase();
 
         try{
-            this.connection = DbConnectionFactoryTest.getConnection();
             this.patientSymptomController = new PatientSymptomController(this.connection);
 
 
@@ -82,7 +81,6 @@ class PatientSymptomControllerTest extends PatientSymptomTest {
 
         assertEquals(receivedPatientSymptoms.get(0).toEntity(), this.defaultPatientSymptom);
         assertEquals(receivedPatientSymptoms.get(1).toEntity(), this.defaultPatientSymptom2);
-
 
     }
 

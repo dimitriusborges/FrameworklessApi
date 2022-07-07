@@ -148,7 +148,7 @@ public class TreatmentDto implements Dto{
                 Long.parseLong(this.patient.getId()),
                 Integer.parseInt(this.tooth),
                 Integer.parseInt(this.canal1),
-                Integer.parseInt(this.canal1),
+                Integer.parseInt(this.canal2),
                 Integer.parseInt(this.canal3),
                 Integer.parseInt(this.canal4),
                 Integer.parseInt(this.canal5),

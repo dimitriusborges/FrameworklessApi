@@ -24,13 +24,23 @@ The service will have data representation of:
 * Patients
 * Root Canal instruments, like:
   * File
-  * Reamers
+  * Staples
 * Most common symptoms
 * Treatment details, like:
   * Tooth
   * instrument used
 * Reported symptoms
 
-In the future, a proper schema will be added on this documentation.
+
+Schema:
+
+![database_schema](rootcanal_schema.png)
 
 
+### There still work to do...
+
+Although the project is a functional REST API, it lacks at least two things:
+* A proper authentication/authorization layer
+* More varied tests. Right now, only the basic stuff is tested (Is it inserting right? Updating Right? etc). It would be nice to have tests that check how the system deals with broken payloads or with a JSON that is missing some fields
+
+I have no intention to do it in the near future, but I want to. That's the case because I want to move to the other version of the same API, the one using Spring Boot and all its shenanigans

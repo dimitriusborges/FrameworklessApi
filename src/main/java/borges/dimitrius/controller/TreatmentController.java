@@ -1,6 +1,8 @@
 package borges.dimitrius.controller;
 
 import borges.dimitrius.dao.TreatmentDao;
+import borges.dimitrius.model.dto.TreatmentDto;
+import borges.dimitrius.model.entities.Treatment;
 import borges.dimitrius.model.vo.TreatmentVo;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -57,6 +59,85 @@ public class TreatmentController extends RestController implements HttpHandler, 
             e.printStackTrace();
 
             return new Response(500, "");
+        }
+    }
+
+    @Override
+    protected Response post(ExchangeParams params) {
+        String reqBody = params.getReqBody();
+
+        if(reqBody.isEmpty()){
+            return new Response(400, "");
+        }
+
+        Treatment treatment = (Treatment) getEntityFromBody(reqBody, new TreatmentDto());
+
+        TreatmentDao treatmentDao = new TreatmentDao(this.connection);
+
+        try{
+            treatmentDao.insert(treatment);
+            return new Response(201, "");
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            return new Response(500, "");
+        }
+    }
+
+    @Override
+    protected Response put(ExchangeParams params) {
+        String arg = params.getArg();
+
+        if(arg.isEmpty()){
+            return new Response(400, "");
+        }
+
+        String reqBody = params.getReqBody();
+
+        if(reqBody.isEmpty()){
+            return new Response(400, "");
+        }
+
+        Treatment treatmentNewData = (Treatment) this.getEntityFromBody(reqBody, new TreatmentDto());
+
+        try{
+            TreatmentDao treatmentDao = new TreatmentDao(this.connection);
+
+            Treatment treatmentToUpdate = (Treatment) fetchById(treatmentDao, arg);
+
+            if(treatmentToUpdate != null){
+                treatmentToUpdate.copyFrom(treatmentNewData);
+
+                treatmentDao.updateById(treatmentToUpdate);
+
+                return new Response(200, "");
+            }
+            else{
+                return new Response(204, "");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            return new Response(500, "");
+        }
+    }
+
+    @Override
+    protected Response delete(ExchangeParams params) {
+        String arg = params.getArg();
+
+        if(arg.isEmpty()){
+            return new Response(400, "");
+        }
+        else{
+            try{
+                this.deleteById(new TreatmentDao(connection), arg);
+                return new Response(200, "");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return new Response(500, "");
+            }
         }
     }
 }
