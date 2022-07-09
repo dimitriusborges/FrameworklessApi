@@ -13,12 +13,13 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 public class PatientSymptomTest {
 
     protected final PatientSymptom defaultPatientSymptom = new PatientSymptom(1L,
-            Date.valueOf("1970-01-1"),1L);
-    protected final Patient defaultPatient = new Patient(Date.valueOf("1970-01-1"), "Default");
+            LocalDate.parse("1970-01-01"),1L);
+    protected final Patient defaultPatient = new Patient(LocalDate.parse("1970-01-01"), "Default");
     protected final Symptom defaultSymptomType = new Symptom("DefaultDescription");
 
     protected PatientSymptomDao patientSymptomDao;

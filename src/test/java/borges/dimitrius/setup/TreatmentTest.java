@@ -15,12 +15,13 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 public class TreatmentTest {
 
-    protected final Treatment defaultTreatment = new Treatment(1L, Date.valueOf("1970-01-1"),
+    protected final Treatment defaultTreatment = new Treatment(1L, LocalDate.parse("1970-01-01"),
             1L, 10, 0, 0, 0, 0, 0, 1L, 1L, "No canal measure");
-    protected final Patient defaultPatient = new Patient(Date.valueOf("1970-01-1"), "Default");
+    protected final Patient defaultPatient = new Patient(LocalDate.parse("1970-01-01"), "Default");
     protected final RootFile defaultRootFile = new RootFile("NameType", "Brand");
     protected final Staple defaultStaple = new Staple("Type1A");
 

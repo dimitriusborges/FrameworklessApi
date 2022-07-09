@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,7 +16,7 @@ public class PatientDaoTest extends PatientTest {
 
     @Test
     public void insertNewPatient(){
-        Patient newPatient = new Patient(Date.valueOf("2022-01-01"), "NewPatient");
+        Patient newPatient = new Patient(LocalDate.parse("2022-01-01"), "NewPatient");
 
         try {
             this.patientDao.insert(newPatient);

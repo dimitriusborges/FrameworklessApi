@@ -56,7 +56,7 @@ public class PatientSymptomDao extends MultiEntityDao{
             patientSymptomList.add(new PatientSymptom(
                     resultSet.getLong(1),
                     resultSet.getLong(2),
-                    resultSet.getDate(3),
+                    resultSet.getDate(3).toLocalDate(),
                     resultSet.getLong(4)
                     ));
         }

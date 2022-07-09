@@ -4,6 +4,7 @@ package borges.dimitrius.model.dto;
 import borges.dimitrius.model.entities.Patient;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class PatientDto implements Dto{
 
@@ -46,7 +47,7 @@ public class PatientDto implements Dto{
     @Override
     public Patient toEntity() {
         return new Patient(this.id != null? Long.parseLong(this.id): 0,
-                this.birthdate != null? Date.valueOf(this.birthdate): null,
+                this.birthdate != null? LocalDate.parse(this.birthdate): null,
                 this.name);
     }
 

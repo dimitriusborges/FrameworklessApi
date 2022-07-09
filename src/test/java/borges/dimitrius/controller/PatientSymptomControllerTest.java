@@ -13,6 +13,7 @@ import java.lang.reflect.Type;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +23,7 @@ class PatientSymptomControllerTest extends PatientSymptomTest {
     private PatientSymptomController patientSymptomController;
 
     protected final PatientSymptom defaultPatientSymptom2 = new PatientSymptom(2L,
-            Date.valueOf("1970-02-02"),2L);
+            LocalDate.parse("1970-02-02"),2L);
 
     @Override
     @BeforeEach
@@ -91,7 +92,7 @@ class PatientSymptomControllerTest extends PatientSymptomTest {
                 "{\"reportDate\": \"1970-01-01\",\"patient\": {\"id\": \"1\"},\"symptom\": {\"id\": \"2\"}}",
                 null);
 
-        PatientSymptom patientSymptomExpected = new PatientSymptom(3L, 2L, Date.valueOf("1970-01-01"), 1L);
+        PatientSymptom patientSymptomExpected = new PatientSymptom(3L, 2L, LocalDate.parse("1970-01-01"), 1L);
 
         Response response = this.patientSymptomController.post(exchangeParamsMock);
         assertEquals(response.getCode(), 201);
@@ -111,7 +112,7 @@ class PatientSymptomControllerTest extends PatientSymptomTest {
                 "{\"reportDate\": \"1970-02-02\",\"patient\": {\"id\": \"2\"},\"symptom\": {\"id\": \"1\"}}",
                 null);
 
-        PatientSymptom patientSymptomUpdating = new PatientSymptom(1L, 1L, Date.valueOf("1970-02-02"), 2L);
+        PatientSymptom patientSymptomUpdating = new PatientSymptom(1L, 1L, LocalDate.parse("1970-02-02"), 2L);
 
         Response response = this.patientSymptomController.put(exchangeParamsMock);
         assertEquals(response.getCode(), 200);

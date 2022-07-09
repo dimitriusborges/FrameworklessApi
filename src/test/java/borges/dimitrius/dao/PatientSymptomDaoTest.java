@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +21,7 @@ class PatientSymptomDaoTest extends PatientSymptomTest {
 
     @Test
     public void insertNewPatientSymptom(){
-        PatientSymptom newPatientSymptom = new PatientSymptom(1L, Date.valueOf("1970-1-31"), 1L);
+        PatientSymptom newPatientSymptom = new PatientSymptom(1L, LocalDate.parse("1970-01-31"), 1L);
 
         try{
             patientSymptomDao.insert(newPatientSymptom);
@@ -69,7 +70,7 @@ class PatientSymptomDaoTest extends PatientSymptomTest {
             PatientSymptom patientSymptomFromDb = patientSymptomDao.findById(1L);
 
             PatientSymptom patientSymptomToUpdate = new PatientSymptom(patientSymptomFromDb.getPatientId(),
-                    2L, Date.valueOf("1970-12-31"), 2L);
+                    2L, LocalDate.parse("1970-12-31"), 2L);
 
             patientSymptomDao.updateById(patientSymptomToUpdate);
 

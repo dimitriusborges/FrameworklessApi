@@ -44,7 +44,7 @@ public class PatientDao extends Dao{
 
             pacientList.add(new Patient(
                     resultSet.getLong(1),
-                    resultSet.getDate(2),
+                    resultSet.getDate(2).toLocalDate(),
                     resultSet.getString(3)
             ));
         }

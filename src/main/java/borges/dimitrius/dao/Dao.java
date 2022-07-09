@@ -5,6 +5,7 @@ import borges.dimitrius.model.entities.Entity;
 
 import java.sql.*;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 public abstract class Dao {
@@ -68,7 +69,8 @@ public abstract class Dao {
                 case "java.lang.Double" -> stmt.setDouble(++idx, (Double) val);
                 case "java.lang.Integer"-> stmt.setInt(++idx, (Integer) val);
                 case "java.lang.Long" -> stmt.setLong(++idx, (Long) val);
-                case "java.sql.Date" -> stmt.setDate(++idx, (Date) val);
+                case "java.time.LocalDate" -> stmt.setDate(++idx, Date.valueOf((LocalDate) val));
+
                 default -> throw new SQLException("Type: " + valType + " Not implemented yet");
             }
         }

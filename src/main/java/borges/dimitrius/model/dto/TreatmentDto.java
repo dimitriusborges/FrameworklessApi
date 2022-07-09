@@ -4,6 +4,7 @@ import borges.dimitrius.model.entities.Entity;
 import borges.dimitrius.model.entities.Treatment;
 import com.mysql.cj.log.Log;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class TreatmentDto implements Dto{
@@ -144,7 +145,7 @@ public class TreatmentDto implements Dto{
     @Override
     public Treatment toEntity() {
         return new Treatment(this.id != null ? Long.parseLong(this.id) : 0,
-                java.sql.Date.valueOf(this.procedureDate),
+                LocalDate.parse(this.procedureDate),
                 Long.parseLong(this.patient.getId()),
                 Integer.parseInt(this.tooth),
                 Integer.parseInt(this.canal1),

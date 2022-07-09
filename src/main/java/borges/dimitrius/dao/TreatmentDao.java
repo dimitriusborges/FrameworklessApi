@@ -52,7 +52,7 @@ public class TreatmentDao extends MultiEntityDao {
         while(resultSet.next()){
             procedures.add(new Treatment(
                     resultSet.getLong(1),
-                    resultSet.getDate(2),
+                    resultSet.getDate(2).toLocalDate(),
                     resultSet.getLong(3),
                     resultSet.getInt(4),
                     resultSet.getInt(5),

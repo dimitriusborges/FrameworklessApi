@@ -3,19 +3,20 @@ package borges.dimitrius.model.entities;
 import borges.dimitrius.model.dto.PatientDto;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Patient extends TransferableEntity {
 
-    private Date birthDate;
+    private LocalDate birthDate;
     private String name;
 
-    public Patient(Date birthDate, String name) {
+    public Patient(LocalDate birthDate, String name) {
         this.birthDate = birthDate;
         this.name = name;
     }
 
-    public Patient(Long id, Date birthDate, String name) {
+    public Patient(Long id, LocalDate birthDate, String name) {
         this.id = id;
         this.birthDate = birthDate;
         this.name = name;
@@ -26,7 +27,7 @@ public class Patient extends TransferableEntity {
 
         Patient patientToCopy = (Patient) entityToCopy;
 
-        Date birthDate = patientToCopy.getBirthDate();
+        LocalDate birthDate = patientToCopy.getBirthDate();
         if(birthDate != null){
             this.birthDate = birthDate;
         }
@@ -38,11 +39,11 @@ public class Patient extends TransferableEntity {
         }
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 

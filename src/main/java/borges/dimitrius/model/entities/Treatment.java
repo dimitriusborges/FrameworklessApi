@@ -1,11 +1,12 @@
 package borges.dimitrius.model.entities;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
 public class Treatment extends Entity{
 
-    private Date procedureDate;
+    private LocalDate procedureDate;
     private Long patientId;
     private Integer tooth;
     private Integer canal1;
@@ -17,7 +18,7 @@ public class Treatment extends Entity{
     private Long stapleId;
     private String observation;
 
-    public Treatment(Long id, Date procedureDate, Long patientId, int tooth, Long fileId, Long stapleId, String observation) {
+    public Treatment(Long id, LocalDate procedureDate, Long patientId, int tooth, Long fileId, Long stapleId, String observation) {
         this.id = id;
         this.procedureDate = procedureDate;
         this.patientId = patientId;
@@ -27,7 +28,7 @@ public class Treatment extends Entity{
         this.observation = observation;
     }
 
-    public Treatment(Long id, Date procedureDate, Long patientId, int tooth,
+    public Treatment(Long id, LocalDate procedureDate, Long patientId, int tooth,
                      int canal1,
                      int canal2,
                      int canal3,
@@ -48,7 +49,7 @@ public class Treatment extends Entity{
         this.observation = observation;
     }
 
-    public Treatment(Date procedureDate, Long patientId, int tooth, Long fileId, Long stapleId, String observation) {
+    public Treatment(LocalDate procedureDate, Long patientId, int tooth, Long fileId, Long stapleId, String observation) {
         this.procedureDate = procedureDate;
         this.patientId = patientId;
         this.tooth = tooth;
@@ -57,11 +58,11 @@ public class Treatment extends Entity{
         this.observation = observation;
     }
 
-    public Date getProcedureDate() {
+    public LocalDate getProcedureDate() {
         return procedureDate;
     }
 
-    public void setProcedureDate(Date procedureDate) {
+    public void setProcedureDate(LocalDate procedureDate) {
         this.procedureDate = procedureDate;
     }
 
@@ -186,7 +187,7 @@ public class Treatment extends Entity{
         Integer tooth = treatmentToCopy.getTooth();
         this.tooth = tooth != null ? tooth : this.tooth;
 
-        Date procedureDate = treatmentToCopy.getProcedureDate();
+        LocalDate procedureDate = treatmentToCopy.getProcedureDate();
         this.procedureDate = procedureDate != null? procedureDate : this.procedureDate;
 
         Integer canal1 = treatmentToCopy.getCanal1();

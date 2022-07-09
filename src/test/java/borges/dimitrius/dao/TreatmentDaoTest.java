@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.List;
 
 class TreatmentDaoTest extends TreatmentTest {
@@ -22,7 +23,7 @@ class TreatmentDaoTest extends TreatmentTest {
 
     @Test
     public void insertNewTreatment(){
-        Treatment newTreatment = new Treatment(1L, Date.valueOf("1970-01-1"), 1L, 15, 0, 0, 0, 0, 0, 1L, 1L, "Observation");
+        Treatment newTreatment = new Treatment(1L, LocalDate.parse("1970-01-01"), 1L, 15, 0, 0, 0, 0, 0, 1L, 1L, "Observation");
 
         try{
             treatmentDao.insert(newTreatment);
@@ -73,7 +74,7 @@ class TreatmentDaoTest extends TreatmentTest {
         try {
             Treatment treatmentFromDb = treatmentDao.findById(1L);
 
-            Treatment treatmentToUpDate = new Treatment(1L, Date.valueOf("1970-01-1"), 2L, 15, 0, 0, 0, 0, 0, 2L, 2L, "Default");
+            Treatment treatmentToUpDate = new Treatment(1L, LocalDate.parse("1970-01-01"), 2L, 15, 0, 0, 0, 0, 0, 2L, 2L, "Default");
 
             treatmentDao.updateById(treatmentToUpDate);
 

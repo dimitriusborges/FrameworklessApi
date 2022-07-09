@@ -12,13 +12,14 @@ import java.lang.reflect.Type;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TreatmentControllerTest extends TreatmentTest {
 
-    protected final Treatment defaultTreatment2 = new Treatment(2L, Date.valueOf("1970-02-2"),
+    protected final Treatment defaultTreatment2 = new Treatment(2L, LocalDate.parse("1970-02-02"),
             2L, 20, 0, 0, 0, 0, 0, 2L, 2L, "Some observation");
 
     private TreatmentController treatmentController;
@@ -90,7 +91,7 @@ class TreatmentControllerTest extends TreatmentTest {
                 null);
 
         Treatment treatmentExpected = new Treatment(
-                3L, Date.valueOf("2022-07-07"),
+                3L, LocalDate.parse("2022-07-07"),
                 2L, 32, 1, 2, 3, 4, 5, 2L, 2L, "No observations");
 
         Response response = this.treatmentController.post(exchangeParamsMock);
@@ -113,7 +114,7 @@ class TreatmentControllerTest extends TreatmentTest {
                 null);
 
         Treatment treatmentUpdating = new Treatment(
-                1L, Date.valueOf("2022-07-07"),
+                1L, LocalDate.parse("2022-07-07"),
                 2L, 10, 1, 2, 3, 4, 5, 2L, 2L, "No observations");
 
         Response response = this.treatmentController.put(exchangeParamsMock);

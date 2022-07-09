@@ -1,23 +1,24 @@
 package borges.dimitrius.model.entities;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
 public class PatientSymptom extends Entity{
 
     private Long symptomId;
-    private Date reportDate;
+    private LocalDate reportDate;
     private Long patientId;
 
 
-    public PatientSymptom(Long id, Long symptomId, Date reportDate, Long patientId){
+    public PatientSymptom(Long id, Long symptomId, LocalDate reportDate, Long patientId){
         this.id = id;
         this.symptomId = symptomId;
         this.reportDate = reportDate;
         this.patientId = patientId;
     }
 
-    public PatientSymptom(Long symptomId, Date reportDate, Long patientId){
+    public PatientSymptom(Long symptomId, LocalDate reportDate, Long patientId){
         this.symptomId = symptomId;
         this.reportDate = reportDate;
         this.patientId = patientId;
@@ -39,11 +40,11 @@ public class PatientSymptom extends Entity{
         this.patientId = patientId;
     }
 
-    public Date getReportDate() {
+    public LocalDate getReportDate() {
         return reportDate;
     }
 
-    public void setReportDate(Date reportDate) {
+    public void setReportDate(LocalDate reportDate) {
         this.reportDate = reportDate;
     }
 
@@ -81,7 +82,7 @@ public class PatientSymptom extends Entity{
             this.symptomId = symptomId;
         }
 
-        Date reportDate = patientSymptomToCopy.getReportDate();
+        LocalDate reportDate = patientSymptomToCopy.getReportDate();
 
         if (reportDate != null){
             this.reportDate = reportDate;

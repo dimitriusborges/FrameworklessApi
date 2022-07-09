@@ -9,10 +9,11 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 public class PatientTest {
 
-    protected final Patient defaultPatient = new Patient(Date.valueOf("1970-01-1"), "Default");
+    protected final Patient defaultPatient = new Patient(LocalDate.parse("1970-01-01"), "Default");
     protected PatientDao patientDao;
     protected Connection connection;
 

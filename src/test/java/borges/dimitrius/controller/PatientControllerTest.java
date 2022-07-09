@@ -12,13 +12,14 @@ import java.lang.reflect.Type;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PatientControllerTest extends PatientTest {
 
-    private final Patient defaultPatient2 = new Patient(Date.valueOf("1971-02-02"), "Default2");
+    private final Patient defaultPatient2 = new Patient(LocalDate.parse("1971-02-02"), "Default2");
     private PatientController patientController;
 
     @Override
@@ -91,7 +92,7 @@ class PatientControllerTest extends PatientTest {
                 this.patientController.getEndpoint(), "", "post",
                 "{\"name\": \"New Patient\",\"birthdate\": \"1972-03-03\"\n}", null);
 
-        Patient expectedPatient = new Patient(3L, Date.valueOf("1972-03-03"), "New Patient");
+        Patient expectedPatient = new Patient(3L, LocalDate.parse("1972-03-03"), "New Patient");
 
         Response response = patientController.post(exchangeParamsMock);
         assertEquals(response.getCode(), 201);
@@ -113,7 +114,7 @@ class PatientControllerTest extends PatientTest {
                 this.patientController.getEndpoint(), "1", "put",
                 "{\"name\": \"Updated Patient\",\"birthdate\": \"1972-03-03\"\n}", null);
 
-        Patient updatingPatient = new Patient(1L, Date.valueOf("1972-03-03"), "Updated Patient");
+        Patient updatingPatient = new Patient(1L, LocalDate.parse("1972-03-03"), "Updated Patient");
 
         Response response = this.patientController.put(exchangeParamsMock);
         assertEquals(response.getCode(), 200);

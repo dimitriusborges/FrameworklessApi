@@ -3,6 +3,7 @@ package borges.dimitrius.model.dto;
 import borges.dimitrius.model.entities.PatientSymptom;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class PatientSymptomDto implements Dto{
 
@@ -58,7 +59,7 @@ public class PatientSymptomDto implements Dto{
 
         return new PatientSymptom(this.id != null ? Long.parseLong(this.id): 0,
                 this.symptom.toEntity().getId(),
-                Date.valueOf(this.reportDate),
+                LocalDate.parse(this.reportDate),
                 this.patient.toEntity().getId());
     }
 
