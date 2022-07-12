@@ -39,9 +39,11 @@ Schema:
 
 ### There still work to do...
 
-Although the project is a functional REST API, it lacks at least three things:
-1 - A proper authentication/authorization layer
-2 - More varied tests. Right now, only the basic stuff is tested (Is it inserting right? Updating Right? etc). It would be nice to have tests that check how the system deals with broken payloads or with a JSON that is missing some fields
-3 - A nice endpoint that returns a documentation to how to use the API.
+Although the project is a functional REST API, it lacks some stuff:
 
-Except for the third one, that I might do sooner than later, I have no intention to do the other two in the near future. That's the case because I want to move to the other version of the same API, the one using Spring Boot and all its shenanigans
+1. A proper authentication/authorization layer
+2. More varied tests. Right now, only the basic stuff is tested (Is it inserting right? Updating Right? etc). It would be nice to have tests that check how the system deals with broken payloads or with a JSON that is missing some fields
+3. A nice endpoint that returns a documentation to how to use the API.
+4. More endpoints... Only the very basic CRUD was done here, but we know that this isn't enough.
+
+Except for the third one, that I might do sooner than later, I have no intention to do any of them in the near future. That's the case because I want to move to the other version of the same API, the one using Spring Boot and all its shenanigans
